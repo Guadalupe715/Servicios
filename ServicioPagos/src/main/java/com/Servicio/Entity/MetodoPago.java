@@ -12,13 +12,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CuentaSuministro {
+public class MetodoPago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idCuentaSuministro;
-    private  String codigoSuministro;
-    private String nombreCliente;
-    private double monto;
-    private String telefono;
-    private Servicios servicios;
+    private Integer idMetodoPago;
+    String nombre;
 }
