@@ -1,9 +1,6 @@
 package com.Servicio.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,5 +17,10 @@ public class CuentaSuministro {
     private String nombreCliente;
     private double monto;
     private String telefono;
+    @ManyToOne
+    @JoinColumn(name = "idServicios")
     private Servicios servicios;
+    @ManyToOne
+    @JoinColumn(name = "idMetodoPago")
+    private MetodoPago metodoPago;
 }

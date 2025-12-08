@@ -16,5 +16,5 @@ public class MetodoPago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idMetodoPago;
-    String nombre;
+    private String nombre;
 }
