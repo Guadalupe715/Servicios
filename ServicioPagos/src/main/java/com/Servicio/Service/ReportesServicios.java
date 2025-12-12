@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ReportesServicios implements SVreportes {
@@ -33,7 +34,8 @@ public class ReportesServicios implements SVreportes {
     @Override
     public ReportesResponseDTO generarReporte(ReportesRequestDTO request) {
         List<Pagos> pagos = pagosRepocitorio.findByFechaPagoBetween(
-                request.getFechaInicio().atStartOfDay(), request.getFechaFin().atTime(23, 59, 59)
+                request.getFechaInicio().atStartOfDay(),
+                request.getFechaFin().atTime(23, 59, 59)
         );
 
         Reportes reporte = new Reportes();
@@ -42,31 +44,37 @@ public class ReportesServicios implements SVreportes {
         reporte.setFechaConsulta(LocalDateTime.now());
         Reportes guardar = reportesRepositorio.save(reporte);
 
-        List<DetallesReportesResponseDTO> listaDetalles = new ArrayList<>();
-        Map<String, Double> totalPorMetodo = new HashMap<>();
-
-        double totalGenerado = 0;
-        for (Pagos p : pagos) {
+        List<DetallesReportes> detalles = pagos.stream().map(p -> {
             DetallesReportes det = new DetallesReportes();
-            det.setReportes(reporte);
+            det.setReportes(guardar);
             det.setPagos(p);
-            detallesRepositorio.save(det);
+            return det;
 
-            DetallesReportesResponseDTO dto = new DetallesReportesResponseDTO();
-            dto.setIdDetallesReportes(det.getIdDetallesReportes());
-            dto.setMonto(p.getCuentaSuministro().getMonto());
-            dto.setMetodoPago(p.getMetodoPago().getNombre());
-            dto.setFechaPago(p.getFechaPago());
-            listaDetalles.add(dto);
+        }).collect(Collectors.toList());
 
-            double monto = p.getCuentaSuministro().getMonto();
-            String metodo = p.getMetodoPago().getNombre();
+        detallesRepositorio.saveAll(detalles);
 
-            totalGenerado += monto;
-            totalPorMetodo.put(metodo, totalPorMetodo.getOrDefault(metodo, 0.0) + monto);
+        List<DetallesReportesResponseDTO> listaDetalles = detalles.stream()
+                .map(det -> {
+                    Pagos p = det.getPagos();
+                    return new DetallesReportesResponseDTO(
+                            det.getIdDetallesReportes(),
+                            p.getCuentaSuministro().getMonto(),
+                            p.getMetodoPago().getNombre(),
+                            p.getFechaPago()
+                    );
+                }).collect(Collectors.toList());
 
+        Map<String, Double> totalPorMetodo = listaDetalles.stream()
+                .collect(Collectors.groupingBy(
+                        DetallesReportesResponseDTO::getMetodoPago,
+                        Collectors.summingDouble(DetallesReportesResponseDTO::getMonto)
+                ));
 
-        }
+        double totalGenerado = listaDetalles.stream()
+                .mapToDouble(DetallesReportesResponseDTO::getMonto)
+                .sum();
+
         return new ReportesResponseDTO(
                 guardar.getIdReportes(),
                 guardar.getFechaInicio(),
@@ -86,23 +94,27 @@ public class ReportesServicios implements SVreportes {
 
         List<DetallesReportes> detalles = detallesRepositorio.findByReportesIdReportes(idReportes);
 
-        List<DetallesReportesResponseDTO> listaDetalles = new ArrayList<>();
-        Map<String, Double> totalPorMetodo = new HashMap<>();
-        double totalGenerado = 0;
-        for (DetallesReportes det : detalles) {
-            double monto = det.getPagos().getCuentaSuministro().getMonto();
-            String metodo = det.getPagos().getMetodoPago().getNombre();
+        List<DetallesReportesResponseDTO> listaDetalles = detalles.stream()
+                .map(det -> {
+                    Pagos p = det.getPagos();
+                    return new DetallesReportesResponseDTO(
+                            det.getIdDetallesReportes(),
+                            p.getCuentaSuministro().getMonto(),
+                            p.getMetodoPago().getNombre(),
+                            p.getFechaPago()
+                    );
+                }).collect(Collectors.toList());
 
-            DetallesReportesResponseDTO dto = new DetallesReportesResponseDTO();
-            dto.setIdDetallesReportes(det.getIdDetallesReportes());
-            dto.setMonto(monto);
-            dto.setMetodoPago(metodo);
-            dto.setFechaPago(det.getPagos().getFechaPago());
-            listaDetalles.add(dto);
+        Map<String, Double> totalPorMetodo = listaDetalles.stream()
+                .collect(Collectors.groupingBy(
+                        DetallesReportesResponseDTO::getMetodoPago,
+                        Collectors.summingDouble(DetallesReportesResponseDTO::getMonto)
+                ));
 
-            totalGenerado += monto;
-            totalPorMetodo.put(metodo, totalPorMetodo.getOrDefault(metodo, 0.0) + monto);
-        }
+
+        double totalGenerado = listaDetalles.stream()
+                .mapToDouble(DetallesReportesResponseDTO::getMonto)
+                .sum();
 
 
         return new ReportesResponseDTO(
