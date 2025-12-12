@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class DetallesReportesResponseDTO {
     private Integer idDetallesReportes;
+    private String codigoSuministro;
+    private String nombreCliente;
+    private String servicio;
     private double monto;
     private String metodoPago;
     private LocalDateTime fechaPago;

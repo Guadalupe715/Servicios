@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/service")
+@RequestMapping("/api/service")
 public class ServiciosController {
     @Autowired
     private ServiciosServicios serviciosServicios;
@@ -31,7 +31,7 @@ public class ServiciosController {
         return ResponseEntity.ok(serv);
     }
 
-    @PostMapping
+    @PostMapping("/agregar")
     public ResponseEntity<Servicios> AgregarServicios(@RequestBody Servicios serv) {
         Servicios s = serviciosServicios.agregar(serv);
         if (s == null) {

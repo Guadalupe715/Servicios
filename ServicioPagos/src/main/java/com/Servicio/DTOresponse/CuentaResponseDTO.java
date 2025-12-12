@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CuentaResponseDTO {
     private Integer idCuentaSuministro;
+    private String nombreEmpresa;
+    private String direccion;
     private String codigoSuministro;
     private String nombreCliente;
     private String telefono;
@@ -17,6 +19,4 @@ public class CuentaResponseDTO {
     private String nombreMetodoPago;
     private String serviciosOfrecidos;
     private String publicidad;
-    private String nombreEmpresa;
-    private String direccion;
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/met")
+@RequestMapping("/api/met")
 public class MetodoController {
     @Autowired
     private MetodoServicios metodoServicios;
@@ -32,7 +32,7 @@ public class MetodoController {
         return ResponseEntity.ok(meto);
     }
 
-    @PostMapping
+    @PostMapping("/agregar")
     public ResponseEntity<MetodoPago> AgregarMetodo(@RequestBody MetodoPago meto) {
         MetodoPago m = metodoServicios.agregar(meto);
         if (m == null) {

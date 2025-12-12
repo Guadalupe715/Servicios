@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UsuariosController {
     @Autowired
     private UsuariosServicios usuariosServicios;
@@ -32,7 +32,7 @@ public class UsuariosController {
         return ResponseEntity.ok(usu);
     }
 
-    @PostMapping
+    @PostMapping("/agregar")
     public ResponseEntity<Usuarios> AgregarUsuarios(@RequestBody Usuarios usu) {
         Usuarios u = usuariosServicios.agregar(usu);
         if (u == null) {

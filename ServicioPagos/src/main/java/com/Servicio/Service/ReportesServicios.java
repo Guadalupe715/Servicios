@@ -59,6 +59,9 @@ public class ReportesServicios implements SVreportes {
                     Pagos p = det.getPagos();
                     return new DetallesReportesResponseDTO(
                             det.getIdDetallesReportes(),
+                            p.getCuentaSuministro().getCodigoSuministro(),
+                            p.getCuentaSuministro().getNombreCliente(),
+                            p.getServicios().getNombre(),
                             p.getCuentaSuministro().getMonto(),
                             p.getMetodoPago().getNombre(),
                             p.getFechaPago()
@@ -99,10 +102,13 @@ public class ReportesServicios implements SVreportes {
                     Pagos p = det.getPagos();
                     return new DetallesReportesResponseDTO(
                             det.getIdDetallesReportes(),
+                            p.getCuentaSuministro().getCodigoSuministro(),
+                            p.getCuentaSuministro().getNombreCliente(),
+                            p.getServicios().getNombre(),
                             p.getCuentaSuministro().getMonto(),
                             p.getMetodoPago().getNombre(),
                             p.getFechaPago()
-                    );
+                            );
                 }).collect(Collectors.toList());
 
         Map<String, Double> totalPorMetodo = listaDetalles.stream()

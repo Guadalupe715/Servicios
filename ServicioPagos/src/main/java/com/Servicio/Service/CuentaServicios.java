@@ -31,9 +31,9 @@ public class CuentaServicios implements SVcuentaSuministro {
 
         CuentaSuministro cuenta = new CuentaSuministro();
         cuenta.setCodigoSuministro(request.getCodigoSuministro());
-        cuenta.setMonto(request.getMonto());
         cuenta.setNombreCliente(request.getNombreCliente());
         cuenta.setTelefono(request.getTelefono());
+        cuenta.setMonto(request.getMonto());
         cuenta.setServiciosOfrecidos(request.getServiciosOfrecidos());
         cuenta.setPublicidad(request.getPublicidad());
         cuenta.setServicios(servicio);
@@ -46,9 +46,9 @@ public class CuentaServicios implements SVcuentaSuministro {
                 guardar.getNombreEmpresa(),
                 guardar.getDireccion(),
                 guardar.getCodigoSuministro(),
-                guardar.getMonto(),
                 guardar.getNombreCliente(),
                 guardar.getTelefono(),
+                guardar.getMonto(),
                 servicio.getNombre(),
                 metodoPago.getNombre(),
                 guardar.getServiciosOfrecidos(),
@@ -65,9 +65,9 @@ public class CuentaServicios implements SVcuentaSuministro {
                         c.getCodigoSuministro(),
                         c.getNombreEmpresa(),
                         c.getDireccion(),
-                        c.getMonto(),
                         c.getNombreCliente(),
                         c.getTelefono(),
+                        c.getMonto(),
                         c.getServicios().getNombre(),
                         c.getMetodoPago().getNombre(),
                         c.getPublicidad(),
