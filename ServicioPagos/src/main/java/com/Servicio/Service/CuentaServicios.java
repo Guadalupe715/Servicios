@@ -1,7 +1,7 @@
 package com.Servicio.Service;
 
+import com.Servicio.DTOresponse.CuentaResponseDTO;
 import com.Servicio.DTOresponse.Request.CuentaRequestDTO;
-import com.Servicio.DTOresponse.cuentaResponseDTO;
 import com.Servicio.Entity.CuentaSuministro;
 import com.Servicio.Entity.MetodoPago;
 import com.Servicio.Entity.Servicios;
@@ -10,10 +10,12 @@ import com.Servicio.Repository.MetodoPagoRepositorio;
 import com.Servicio.Repository.ServiciosRepocitorio;
 import com.Servicio.Service.Impl.SVcuentaSuministro;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class CuentaServicios implements SVcuentaSuministro {
     @Autowired
     private MetodoPagoRepositorio metodoPagoRepositorio;
@@ -23,7 +25,7 @@ public class CuentaServicios implements SVcuentaSuministro {
     private CuentaSuministroRepositorio cuentaSuministroRepositorio;
 
     @Override
-    public cuentaResponseDTO crear(CuentaRequestDTO request) {
+    public CuentaResponseDTO crear(CuentaRequestDTO request) {
         Servicios servicio = serviciosRepocitorio.findById(request.getIdServicio()).orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
         MetodoPago metodoPago = metodoPagoRepositorio.findById(request.getIdServicio()).orElseThrow(() -> new RuntimeException("Metodo de pago no encontrado"));
 
@@ -37,7 +39,7 @@ public class CuentaServicios implements SVcuentaSuministro {
 
         CuentaSuministro guardar = cuentaSuministroRepositorio.save(cuenta);
 
-        return new cuentaResponseDTO(
+        return new CuentaResponseDTO(
                 guardar.getIdCuentaSuministro(),
                 guardar.getCodigoSuministro(),
                 guardar.getNombreCliente(),
@@ -50,9 +52,9 @@ public class CuentaServicios implements SVcuentaSuministro {
     }
 
     @Override
-    public List<cuentaResponseDTO> listar() {
+    public List<CuentaResponseDTO> listar() {
         return cuentaSuministroRepositorio.findAll().stream()
-                .map(c -> new cuentaResponseDTO(
+                .map(c -> new CuentaResponseDTO(
                         c.getIdCuentaSuministro(),
                         c.getCodigoSuministro(),
                         c.getNombreCliente(),
