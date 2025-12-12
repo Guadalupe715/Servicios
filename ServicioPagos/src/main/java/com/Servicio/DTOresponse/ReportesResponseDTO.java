@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +14,11 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReportesResponseDTO {
-    private Reportes reporte;
+    private Integer idReportes;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
+    private LocalDateTime fechaConsulta;
     private List<DetallesReportesResponseDTO> detalles;
     private double totalGeneral;
     private Map<String, Double> totalPorMetodo;
-    private Map<String, Integer> cantidadPorMetodo;
 }

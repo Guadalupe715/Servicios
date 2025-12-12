@@ -21,5 +21,5 @@ public class Reportes {
     private LocalDate fechaFin;
     private LocalDateTime fechaConsulta;
     @OneToMany (mappedBy = "reportes")
-    private List<detallesReportes> detallesReportes;
+    private List<DetallesReportes> detallesReportes;
 }
