@@ -24,7 +24,7 @@ public class UsuariosController {
     }
 
     @GetMapping("/{idUsuarios}")
-    public ResponseEntity<Usuarios> BuscarUsuarioID(@PathVariable Integer idUsuarios) {
+    public ResponseEntity<Usuarios> BuscarUsuarioId(@PathVariable Integer idUsuarios) {
         Usuarios usu = usuariosServicios.buscar(idUsuarios);
         if (usu == null) {
             return ResponseEntity.notFound().build();
@@ -42,7 +42,7 @@ public class UsuariosController {
     }
 
     @DeleteMapping("/{idUsuarios}")
-    public ResponseEntity<Boolean> EliminarUsuarioID(@PathVariable Integer idUsuarios) {
+    public ResponseEntity<Boolean> EliminarUsuarioId(@PathVariable Integer idUsuarios) {
         boolean delet = usuariosServicios.eliminar(idUsuarios);
         if (delet) {
             return ResponseEntity.ok(delet);

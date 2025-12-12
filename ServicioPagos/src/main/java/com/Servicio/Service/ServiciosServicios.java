@@ -1,14 +1,14 @@
 package com.Servicio.Service;
 
 import com.Servicio.Entity.Servicios;
-import com.Servicio.Entity.Usuarios;
 import com.Servicio.Repository.ServiciosRepocitorio;
-import com.Servicio.Repository.UsuariosRepocitorio;
 import com.Servicio.Service.Impl.SVservicios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ServiciosServicios implements SVservicios {
     @Autowired
     private ServiciosRepocitorio serviciosRepocitorio;
@@ -30,7 +30,7 @@ public class ServiciosServicios implements SVservicios {
 
     @Override
     public boolean eliminar(Integer idServicios) {
-        if(serviciosRepocitorio.existsById(idServicios)){
+        if (serviciosRepocitorio.existsById(idServicios)) {
             serviciosRepocitorio.deleteById(idServicios);
             return true;
         }
