@@ -1,5 +1,12 @@
 package com.Servicio.DTOresponse.Request;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CuentaRequestDTO {
     private String codigoSuministro;
     private String nombreCliente;

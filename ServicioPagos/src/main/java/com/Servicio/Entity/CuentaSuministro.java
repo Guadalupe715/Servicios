@@ -13,7 +13,7 @@ public class CuentaSuministro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idCuentaSuministro;
-    private  String codigoSuministro;
+    private String codigoSuministro;
     private String nombreCliente;
     private double monto;
     private String telefono;

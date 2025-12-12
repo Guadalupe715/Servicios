@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface MetodoPagoRepositorio extends JpaRepository<MetodoPago,Integer> {
-    Optional<MetodoPago> findByNombre(String nombre);
+
 }
