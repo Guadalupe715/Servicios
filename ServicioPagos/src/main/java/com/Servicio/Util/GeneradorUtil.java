@@ -6,7 +6,7 @@ public class GeneradorUtil {
 
     private static final AtomicInteger contador = new AtomicInteger(1000);
 
-    public String generarCodigoOperacio() {
+    public static String generarCodigoOperacio() {
         String fecha = java.time.LocalDateTime.now()
                 .format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         int random = (int) (Math.random() * 9000) + 1000;
@@ -14,7 +14,7 @@ public class GeneradorUtil {
         return "OP-" + fecha + "-" + random;
     }
 
-    public String generaNumeroComprobante() {
+    public static String generaNumeroComprobante() {
         int numero = contador.incrementAndGet();
         return "C-"+ numero;
     }

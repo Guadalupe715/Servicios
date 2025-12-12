@@ -5,6 +5,7 @@ import com.Servicio.DTOresponse.Request.PagosRequestDTO;
 import com.Servicio.Entity.*;
 import com.Servicio.Repository.*;
 import com.Servicio.Service.Impl.SVpagos;
+import com.Servicio.Util.GeneradorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
@@ -37,7 +38,21 @@ public class PagosServicios implements SVpagos {
         pagos.setServicios(servicios);
         pagos.setMetodoPago(metodoPago);
         pagos.setCuentaSuministro(cuentaSuministro);
+        pagos.setCodigoOperacion(GeneradorUtil.generarCodigoOperacio());
+        pagos.setNumeroComprobante(GeneradorUtil.generaNumeroComprobante());
         pagos.setFechaPago(LocalDateTime.now());
 
+        Pagos guardar = pagosRepocitorio.save(pagos);
+
+        return new PagosResponseDTO(
+                guardar.getIdPagos(),
+                servicios.getNombre(),
+                metodoPago.getNombre(),
+                usuarios.getNombre(),
+                cuentaSuministro.getCodigoSuministro(),
+                guardar.getCodigoOperacion(),
+                guardar.getNumeroComprobante(),
+                guardar.getFechaPago()
+        );
     }
 }
