@@ -2,13 +2,14 @@ package com.Servicio.Service;
 
 import com.Servicio.Entity.Usuarios;
 import com.Servicio.Repository.UsuariosRepocitorio;
+import com.Servicio.Service.Impl.SVusuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UsuariosServicios implements SVusuarios{
+public class UsuariosServicios implements SVusuarios {
 
     @Autowired
     private UsuariosRepocitorio usuariosRepocitorio;
@@ -19,8 +20,8 @@ public class UsuariosServicios implements SVusuarios{
     }
 
     @Override
-    public Usuarios buscar(int id) {
-        return usuariosRepocitorio.findById(id).orElse(null);
+    public Usuarios buscar(Integer idUsuarios) {
+        return usuariosRepocitorio.findById(idUsuarios).orElse(null);
     }
 
     @Override
@@ -29,9 +30,9 @@ public class UsuariosServicios implements SVusuarios{
     }
 
     @Override
-    public boolean eliminar(int id) {
-        if(usuariosRepocitorio.existsById(id)){
-           usuariosRepocitorio.deleteById(id);
+    public boolean eliminar(Integer idUsuarios) {
+        if(usuariosRepocitorio.existsById(idUsuarios)){
+           usuariosRepocitorio.deleteById(idUsuarios);
            return true;
         }
             return false;
