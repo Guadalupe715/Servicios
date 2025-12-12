@@ -7,9 +7,10 @@ import com.Servicio.Repository.*;
 import com.Servicio.Service.Impl.SVpagos;
 import com.Servicio.Util.GeneradorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-
+@Service
 public class PagosServicios implements SVpagos {
     @Autowired
     private UsuariosRepocitorio usuariosRepocitorio;
