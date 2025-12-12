@@ -1,5 +1,6 @@
 package com.Servicio.Service;
 
+import com.Servicio.DTOresponse.ClienteResponseDTO;
 import com.Servicio.DTOresponse.PagosResponseDTO;
 import com.Servicio.DTOresponse.Request.PagosRequestDTO;
 import com.Servicio.Entity.*;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
 @Service
 public class PagosServicios implements SVpagos {
     @Autowired
@@ -25,35 +27,40 @@ public class PagosServicios implements SVpagos {
 
     @Override
     public PagosResponseDTO crearPago(PagosRequestDTO request) {
-        Usuarios usuarios = usuariosRepocitorio.findById(request.getIdUsuarios())
-                .orElseThrow(() -> new RuntimeException("Usuario no Encontrado"));
-        Servicios servicios = serviciosRepocitorio.findById(request.getIdServicios())
-                .orElseThrow(() -> new RuntimeException("Servicio no Encontrado"));
-        CuentaSuministro cuentaSuministro = cuentaSuministroRepositorio.findById(request.getIdCuenta())
-                .orElseThrow(() -> new RuntimeException("Cuenta no Encontrado"));
-        MetodoPago metodoPago = metodoPagoRepositorio.findById(request.getIdMetodo())
-                .orElseThrow(() -> new RuntimeException("Metodo no Encontrado"));
+        Usuarios usuarios = usuariosRepocitorio.findById(request.getIdUsuarios()).orElseThrow(() -> new RuntimeException("Usuario no Encontrado"));
+        Servicios servicios = serviciosRepocitorio.findById(request.getIdServicios()).orElseThrow(() -> new RuntimeException("Servicio no Encontrado"));
+        CuentaSuministro cuentaSuministro = cuentaSuministroRepositorio.findById(request.getIdCuenta()).orElseThrow(() -> new RuntimeException("Cuenta no Encontrado"));
+        MetodoPago metodoPago = metodoPagoRepositorio.findById(request.getIdMetodo()).orElseThrow(() -> new RuntimeException("Metodo no Encontrado"));
 
         Pagos pagos = new Pagos();
         pagos.setUsuarios(usuarios);
         pagos.setServicios(servicios);
         pagos.setMetodoPago(metodoPago);
         pagos.setCuentaSuministro(cuentaSuministro);
-        pagos.setCodigoOperacion(GeneradorUtil.generarCodigoOperacio());
+        pagos.setCodigoOperacion(GeneradorUtil.generarCodigoOperacion());
         pagos.setNumeroComprobante(GeneradorUtil.generaNumeroComprobante());
         pagos.setFechaPago(LocalDateTime.now());
 
         Pagos guardar = pagosRepocitorio.save(pagos);
 
-        return new PagosResponseDTO(
-                guardar.getIdPagos(),
-                servicios.getNombre(),
-                metodoPago.getNombre(),
+        PagosResponseDTO comprobante = new PagosResponseDTO(
+                cuentaSuministro.getNombreEmpresa(),
+                cuentaSuministro.getDireccion(),
                 usuarios.getNombre(),
-                cuentaSuministro.getCodigoSuministro(),
-                guardar.getCodigoOperacion(),
-                guardar.getNumeroComprobante(),
-                guardar.getFechaPago()
-        );
+                        new ClienteResponseDTO(
+                                cuentaSuministro.getNombreCliente(),
+                                cuentaSuministro.getTelefono(),
+                                cuentaSuministro.getCodigoSuministro()),
+                        guardar.getCodigoOperacion(),
+                        guardar.getNumeroComprobante(),
+                        guardar.getFechaPago(),
+                        servicios.getNombre(),
+                        cuentaSuministro.getMonto(),
+                        metodoPago.getNombre(),
+                        cuentaSuministro.getServiciosOfrecidos(),
+                        cuentaSuministro.getPublicidad());
+
+        return comprobante;
     }
+
 }

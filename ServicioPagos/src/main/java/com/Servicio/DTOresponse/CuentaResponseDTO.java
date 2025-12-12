@@ -15,4 +15,8 @@ public class CuentaResponseDTO {
     private double monto;
     private String nombreServicio;
     private String nombreMetodoPago;
+    private String serviciosOfrecidos;
+    private String publicidad;
+    private String nombreEmpresa;
+    private String direccion;
 }

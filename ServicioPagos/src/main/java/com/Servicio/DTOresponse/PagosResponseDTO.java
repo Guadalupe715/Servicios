@@ -10,12 +10,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PagosResponseDTO {
-    private Integer idPagos;
-    private String usuarios;
-    private String servicios;
-    private String cuentaSuministro;
-    private String metodoPago;
+    private String nombreEmpresa;
+    private String direccion;
+    private String usuario;
+
+    private ClienteResponseDTO cliente;
     private String codigoOperacion;
     private String numeroComprobante;
     private LocalDateTime fechaPago;
+    private String servicio;
+    private double monto;
+    private String metodoPago;
+
+    private String serviciosOfrecidos;
+    private String publicidad;
 }

@@ -12,6 +12,8 @@ public class CuentaRequestDTO {
     private String nombreCliente;
     private String telefono;
     private double monto;
+    private String serviciosOfrecidos;
+    private String publicidad;
     private Integer idServicio;
     private Integer idMetodoPago;
 }
