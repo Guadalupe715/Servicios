@@ -4,9 +4,10 @@ import com.Servicio.Entity.MetodoPago;
 import com.Servicio.Repository.MetodoPagoRepositorio;
 import com.Servicio.Service.Impl.SVmetodoPago;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class MetodoServicios implements SVmetodoPago {
     @Autowired
     private MetodoPagoRepositorio metodoPagoRepositorio;
