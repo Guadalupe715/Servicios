@@ -36,4 +36,9 @@ public class ServiciosServicios implements SVservicios {
         }
         return false;
     }
+
+    @Override
+    public List<Servicios> listarEmpresa(Integer idEmpresa) {
+        return serviciosRepocitorio.findByEmpresaIdEmpresa(idEmpresa);
+    }
 }

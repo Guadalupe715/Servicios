@@ -1,6 +1,9 @@
 package com.Servicio.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,14 +12,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Servicios {
+public class Empresa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idServicios;
+    private Integer idEmpresa;
     private String nombre;
-    private String icono;
-    private String color;
-    @ManyToOne
-    @JoinColumn(name = "idEmpresa")
-    private Empresa empresa;
 }

@@ -13,4 +13,6 @@ public interface SVservicios {
     public Servicios agregar(Servicios serv);
 
     public boolean eliminar(Integer idServicios);
+
+    public List<Servicios>listarEmpresa(Integer idEmpresa);
 }
