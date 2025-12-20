@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="components/head :: head"></head>
+<body>
+<div class="wrapper">
+    <!-- Navbar -->
+    <div th:replace="components/navbar :: navbar"></div>
+    <!-- Sidebar -->
+    <div th:replace="components/sidebar :: sidebar"></div>
+    <!-- Contenido -->
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-4">
+                    <h2 class="text-white fw-bold">Servicios</h2>
+                </div>
+            </div>
+
+            <div class="content mt-4 d-flex flex-wrap">
+                <!-- Botones dinámicos -->
+                <div class="col-md-3 mb-3" th:each="servicio : ${servicios}">
+                    <button type="button"
+                            th:class="'btn btn-' + ${servicio.color} + ' btn-lg w-100'"
+                            th:attr="onclick=|abrirModalSuministro('${servicio.nombre}')|">
+                        <i class="fas" th:classappend="' ' + ${servicio.icono}"></i>
+                        <span th:text="${servicio.nombre}">Servicio</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MODAL CODIGO DE SUMINISTRO -->
+            <div class="modal fade" id="sedapalModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title" id="tituloServicio">Servicio - Código de Suministro</h5>
+                            <input type="hidden" id="servicioHidden">
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Código de Suministro</label>
+                                <input type="text" id="codigoSuministro" class="form-control" required>
+                            </div>
+
+                            <button class="btn btn-primary w-100" onclick="continuarCliente()">
+                                Continuar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL DATOS DEL CLIENTE -->
+            <div class="modal fade" id="modalCliente" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title">Datos del Pago</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <!-- ===============================
+                                 SERVICIO + CÓDIGO (FIJOS)
+                            ================================ -->
+                            <div class="alert alert-secondary mb-4">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong>Servicio:</strong>
+                                        <span id="servicioTexto">---</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Código de Suministro:</strong>
+                                        <span id="codigoTexto">---</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- datos ocultos para Pagos -->
+                            <input type="hidden" id="codigoHidden">
+                            <input type="hidden" id="servicioHiddenCliente">
+
+                            <!-- ===============================
+                                 DATOS DEL CLIENTE
+                            ================================ -->
+                            <h6 class="mb-3">Datos del Cliente</h6>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nombre del Cliente</label>
+                                        <input type="text" id="nombre" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Teléfono</label>
+                                        <input type="text" id="telefono" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ===============================
+                                 DATOS DEL PAGO
+                            ================================ -->
+                            <h6 class="mb-3 mt-2">Datos del Pago</h6>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Método de Pago</label>
+                                        <select id="metodoPago" class="form-control">
+                                            <option>Efectivo</option>
+                                            <option>Yape</option>
+                                            <option>Plin</option>
+                                            <option>Tarjeta</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Monto</label>
+                                        <input type="number" id="monto" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Publicidad</label>
+                                        <input type="text" id="publicidad" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Descripción</label>
+                                        <textarea id="descripcion" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ===============================
+                                 ACCIÓN
+                            ================================ -->
+                            <button class="btn btn-info w-100 mt-3">
+                                PAGAR
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Footer -->
+        <footer class="footer text-center">
+            <p>© 2025 - Sistema de Gestión</p>
+        </footer>
+    </div>
+</div>
+
+<!-- JS -->
+<script th:src="@{/assets/js/core/jquery.3.2.1.min.js}"></script>
+<script th:src="@{/assets/js/core/popper.min.js}"></script>
+<script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
+<script th:src="@{/assets/js/plugin/chart.js/chart.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js}"></script>
+<script th:src="@{/assets/js/plugin/chart-circle/circles.min.js}"></script>
+<script th:src="@{/assets/js/plugin/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jqvmap/jquery.vmap.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js}"></script>
+<script th:src="@{/assets/js/plugin/sweetalert/sweetalert.min.js}"></script>
+<script th:src="@{/assets/js/atlantis.min.js}"></script>
+<script th:src="@{/assets/js/setting-demo.js}"></script>
+<script th:src="@{/assets/js/demo.js}"></script>
+    <script th:src="@{/assets/js/modal-cliente.js}"></script>
+</body>
+</html>

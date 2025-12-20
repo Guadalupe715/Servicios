@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Dashboard - Ver Usuarios</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+
+    <link rel="icon" th:href="@{/assets/img/icon.ico}" type="image/x-icon"/>
+
+    <!-- Fonts and icons -->
+    <script th:src="@{/assets/js/plugin/webfont/webfont.min.js}"></script>
+    <script>
+        WebFont.load({
+            google: {"families":["Lato:300,400,700,900"]},
+            custom: {
+                "families":[
+                    "Flaticon",
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons"
+                ],
+                urls: ['../assets/css/fonts.min.css']
+            },
+            active: function() {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/atlantis.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/demo.css}">
+</head>
+
+<body>
+<div class="wrapper">
+
+    <!-- HEADER -->
+    <div class="main-header">
+        <div class="logo-header" data-background-color="blue">
+            <a th:href="@{/dashboard}" class="logo"></a>
+
+            <button class="navbar-toggler sidenav-toggler ml-auto" type="button">
+                <span class="navbar-toggler-icon">
+                    <i class="icon-menu"></i>
+                </span>
+            </button>
+
+            <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                    <i class="icon-menu"></i>
+                </button>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
+            <div class="container-fluid">
+                <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown">
+                            <div class="avatar-sm">
+                                <img th:src="@{/assets/img/profile.jpg}" class="avatar-img rounded-circle">
+                            </div>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-user animated fadeIn">
+                            <li>
+                                <div class="user-box">
+                                    <div class="avatar-lg">
+                                        <img th:src="@{/assets/img/profile.jpg}" class="avatar-img rounded">
+                                    </div>
+                                    <div class="u-text">
+                                        <h4 th:text="${usuarioLogueado.nombre}">Usuario</h4>
+                                        <p class="text-muted" th:text="${usuarioLogueado.email}">email</p>
+                                        <a th:href="@{/perfil}" class="btn btn-xs btn-secondary btn-sm">Ver Perfil</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" th:href="@{/logout}">Cerrar sesión</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar sidebar-style-2">
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-primary">
+
+                    <li class="nav-item">
+                        <a th:href="@{/dashboard}">
+                            <i class="fas fa-home"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a th:href="@{/servicios}">
+                            <i class="fas fa-th-list"></i>
+                            <p>Servicios</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a th:href="@{/pagos}">
+                            <i class="fas fa-money-bill"></i>
+                            <p>Pagos</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a data-toggle="collapse" href="#usuarios">
+                            <i class="fas fa-user"></i>
+                            <p>Usuarios</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse show" id="usuarios">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a th:href="@{/usuarios/nuevo}">
+                                        <span class="sub-item">Agregar Usuario</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a th:href="@{/usuarios}">
+                                        <span class="sub-item">Ver Usuarios</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-4">
+                    <h2 class="text-white fw-bold">Ver Usuarios</h2>
+                </div>
+            </div>
+
+            <!-- TABLA -->
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered table-head-bg-primary mx-auto" style="width: 90%;">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="u, iter : ${usuarios}">
+                        <td th:text="${iter.count}">1</td>
+                        <td th:text="${u.nombre}">Nombre</td>
+                        <td th:text="${u.username}">usuario</td>
+                        <td th:text="${u.email}">email</td>
+                        <td th:text="${u.rol}">Rol</td>
+                        <td>
+                            <a th:href="@{/usuarios/editar/{id}(id=${u.id})}"
+                               class="btn btn-sm btn-info">Editar</a>
+
+                            <a th:href="@{/usuarios/eliminar/{id}(id=${u.id})}"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('¿Eliminar usuario?')">Eliminar</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer text-center">
+            <p>© 2025 - Sistema de Gestión</p>
+        </footer>
+    </div>
+</div>
+
+<!-- JS -->
+<script th:src="@{/assets/js/core/jquery.3.2.1.min.js}"></script>
+<script th:src="@{/assets/js/core/popper.min.js}"></script>
+<script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/atlantis.min.js}"></script>
+
+</body>
+</html>

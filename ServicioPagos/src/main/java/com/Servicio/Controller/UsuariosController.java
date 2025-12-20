@@ -4,50 +4,61 @@ import com.Servicio.Entity.Usuarios;
 import com.Servicio.Service.UsuariosServicios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/user")
+@Controller
 public class UsuariosController {
     @Autowired
     private UsuariosServicios usuariosServicios;
 
-    @GetMapping
-    public ResponseEntity<List<Usuarios>> ListarUsuario() {
-        List<Usuarios> usuario = usuariosServicios.listar();
-        if (usuario.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(usuario);
+    @GetMapping("/verusuarios")
+    public String verUsuario(Model model) {
+        List<Usuarios> usuarios = usuariosServicios.listar();
+        model.addAttribute("usuarios", usuarios);
+
+        Usuarios usuarioLogueado = new Usuarios();
+        usuarioLogueado.setNombre("Hizrian");
+        usuarioLogueado.setEmail("hello@example.com");
+        model.addAttribute("usuarioLogueado", usuarioLogueado);
+
+        return "verusuarios";
     }
 
-    @GetMapping("/{idUsuarios}")
-    public ResponseEntity<Usuarios> BuscarUsuarioId(@PathVariable Integer idUsuarios) {
-        Usuarios usu = usuariosServicios.buscar(idUsuarios);
-        if (usu == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(usu);
+    @GetMapping("/agregarUsuario")
+    public String mostrarFormularioUsuario(Model model) {
+        model.addAttribute("usuario", new Usuarios());
+        return "agregarUsuario";
     }
 
-    @PostMapping("/agregar")
-    public ResponseEntity<Usuarios> AgregarUsuarios(@RequestBody Usuarios usu) {
-        Usuarios u = usuariosServicios.agregar(usu);
-        if (u == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(u);
+
+    @PostMapping("/agregarUsuario")
+    public String agregarUsuarioFormulario(Usuarios usu) {
+        usuariosServicios.agregar(usu);
+        return "redirect:/verusuarios";
     }
 
-    @DeleteMapping("/{idUsuarios}")
-    public ResponseEntity<Boolean> EliminarUsuarioId(@PathVariable Integer idUsuarios) {
-        boolean delet = usuariosServicios.eliminar(idUsuarios);
-        if (delet) {
-            return ResponseEntity.ok(delet);
-        }
-        return ResponseEntity.notFound().build();
+
+    @GetMapping("/usuarios/eliminar/{id}")
+    public String eliminarUsuario(@PathVariable("id") Integer id) {
+        usuariosServicios.eliminar(id);
+        return "redirect:/verusuarios";
+    }
+
+    @GetMapping("/usuarios/editar/{id}")
+    public String mostrarEditarUsuario(@PathVariable("id") Integer id, Model model) {
+        Usuarios usuario = usuariosServicios.buscar(id);
+        model.addAttribute("usuario", usuario);
+        return "agregarUsuario";
+    }
+
+    @PostMapping("/usuarios/guardar")
+    public String guardarUsuario(Usuarios usuario) {
+        usuariosServicios.agregar(usuario);
+        return "redirect:/verusuarios";
     }
 
 }

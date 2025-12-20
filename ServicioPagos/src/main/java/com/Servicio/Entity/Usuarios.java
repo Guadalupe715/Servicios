@@ -19,5 +19,6 @@ public class Usuarios {
     private String nombre;
     private String usuario;
     private String email;
+    private String password;
     private String rol;
 }

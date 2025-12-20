@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="components/head :: head"></head>
+<body>
+<div class="wrapper">
+    <!-- Navbar -->
+    <div th:replace="components/navbar :: navbar"></div>
+    <!-- Sidebar -->
+    <div th:replace="components/sidebar :: sidebar"></div>
+    <!-- Contenido -->
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-4">
+                    <h2 class="text-white fw-bold">Agregar Usuario</h2>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center" style="margin-top: 20px;">
+                <div style="width: 85%; max-width: 1000px;">
+                    <form method="post" th:action="@{/usuarios/guardar}">
+                        <!-- Campo oculto para el ID -->
+                        <input type="hidden" name="idUsuario" th:value="${usuario.idUsuario}" />
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="nombre">Nombre</label>
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input th:value="${usuario.nombre}" type="text" class="form-control form-control-lg" id="nombre" name="nombre" placeholder="Ingrese nombre">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="usuario">Usuario</label>
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text"><i class="fas fa-id-badge"></i></span>
+                                    <input th:value="${usuario.usuario}" type="text" class="form-control form-control-lg" id="usuario" name="usuario" placeholder="Ingrese usuario">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input th:value="${usuario.email}" type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Ingrese email">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="password">Password</label>
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input th:value="${usuario.password}" type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Ingrese contraseña">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="rol">Rol</label>
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text"><i class="fas fa-layer-group"></i></span>
+                                    <select class="form-control form-control-lg" id="rol" name="rol">
+                                        <option value="Administrador" th:selected="${usuario.rol == 'Administrador'}">Administrador</option>
+                                        <option value="Empleado" th:selected="${usuario.rol == 'Empleado'}">Empleado</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">
+                                    <span th:text="${usuario.idUsuario != null} ? 'Actualizar' : 'Guardar'">Guardar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+            <script th:src="@{/assets/js/core/jquery.3.2.1.min.js}"></script>
+            <script th:src="@{/assets/js/core/popper.min.js}"></script>
+            <script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+            <script th:src="@{/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js}"></script>
+            <script th:src="@{/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js}"></script>
+            <script th:src="@{/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
+            <script th:src="@{/assets/js/plugin/chart.js/chart.min.js}"></script>
+            <script th:src="@{/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js}"></script>
+            <script th:src="@{/assets/js/plugin/chart-circle/circles.min.js}"></script>
+            <script th:src="@{/assets/js/plugin/datatables/datatables.min.js}"></script>
+            <script th:src="@{/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js}"></script>
+            <script th:src="@{/assets/js/plugin/jqvmap/jquery.vmap.min.js}"></script>
+            <script th:src="@{/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js}"></script>
+            <script th:src="@{/assets/js/plugin/sweetalert/sweetalert.min.js}"></script>
+            <script th:src="@{/assets/js/atlantis.min.js}"></script>
+            <script th:src="@{/assets/js/setting-demo.js}"></script>
+            <script th:src="@{/assets/js/demo.js}"></script>
+
+</body>
+</html>

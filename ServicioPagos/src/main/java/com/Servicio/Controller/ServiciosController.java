@@ -3,49 +3,36 @@ package com.Servicio.Controller;
 import com.Servicio.Entity.Servicios;
 import com.Servicio.Service.ServiciosServicios;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@RestController
-@RequestMapping("/api/service")
+
+@Controller
+@RequestMapping("/servicios")
 public class ServiciosController {
+
     @Autowired
     private ServiciosServicios serviciosServicios;
 
-    @GetMapping
-    public ResponseEntity<List<Servicios>> ListarServicios() {
+
+    @GetMapping("/ver")
+    public String verServicios(Model model) {
         List<Servicios> servicios = serviciosServicios.listar();
-        if (servicios.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(servicios);
+        model.addAttribute("servicios", servicios);
+        return "verServicios";
     }
 
-    @GetMapping("/{idServicios}")
-    public ResponseEntity<Servicios> BuscarServiciosId(@PathVariable Integer idServicios) {
-        Servicios serv = serviciosServicios.buscar(idServicios);
-        if (serv == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(serv);
+    @GetMapping("/agregar")
+    public String mostrarFormulario(Model model) {
+        model.addAttribute("servicio", new Servicios());
+        return "agregarServicios";
     }
 
-    @PostMapping("/agregar")
-    public ResponseEntity<Servicios> AgregarServicios(@RequestBody Servicios serv) {
-        Servicios s = serviciosServicios.agregar(serv);
-        if (s == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(s);
-    }
-
-    @DeleteMapping("/{idServicios}")
-    public ResponseEntity<Boolean> EliminarServiciosId(@PathVariable Integer idServicios) {
-        boolean delet = serviciosServicios.eliminar(idServicios);
-        if (delet) {
-            return ResponseEntity.ok(delet);
-        }
-        return ResponseEntity.notFound().build();
+    @PostMapping("/guardar")
+    public String guardarServicio(Servicios servicio) {
+        serviciosServicios.agregar(servicio);
+        return "redirect:/servicios/ver";
     }
 }

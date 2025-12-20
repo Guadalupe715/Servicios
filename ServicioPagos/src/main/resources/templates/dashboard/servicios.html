@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Atlantis Lite - Bootstrap 4 Admin Dashboard</title>
+	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+	<link rel="icon" href="../examples/assets/img/icon.ico" type="image/x-icon"/>
+
+    
+	<!-- Fonts and icons -->
+	<script src="../examples/assets/js/plugin/webfont/webfont.min.js"></script>
+	<script>
+		WebFont.load({
+			google: {"families":["Lato:300,400,700,900"]},
+			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['../assets/css/fonts.min.css']},
+			active: function() {
+				sessionStorage.fonts = true;
+			}
+		});
+	</script>
+
+	<!-- CSS Files -->
+	<link rel="stylesheet" href="../examples/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../examples/assets/css/atlantis.min.css">
+
+	<!-- CSS Just for demo purpose, don't include it in your project -->
+	<link rel="stylesheet" href="../examples/assets/css/demo.css">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="main-header">
+			<!-- Logo Header -->
+			<div class="logo-header" data-background-color="blue">
+				
+				<a href="index.html" class="logo">
+					
+				</a>
+
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon">
+						<i class="icon-menu"></i>
+					</span>
+				</button>
+
+				<button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
+				
+				<div class="nav-toggle">
+					<button class="btn btn-toggle toggle-sidebar">
+						<i class="icon-menu"></i>
+					</button>	
+				</div>
+			</div>
+			<!-- End Logo Header -->
+
+			<!-- Navbar Header -->
+			<nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
+				
+				<div class="container-fluid">
+					<div class="collapse" id="search-nav">
+						<form class="navbar-left navbar-form nav-search mr-md-3">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<button type="submit" class="btn btn-search pr-1">
+										<i class="fa fa-search search-icon"></i>
+									</button>
+								</div>
+								<input type="text" placeholder="Search ..." class="form-control">
+							</div>
+						</form>
+					</div>
+
+
+					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+						<li class="nav-item toggle-nav-search hidden-caret">
+							<a class="nav-link" data-toggle="collapse" href="#search-nav" role="button" aria-expanded="false" aria-controls="search-nav">
+								<i class="fa fa-search"></i>
+							</a>
+						</li>
+				
+						<li class="nav-item dropdown hidden-caret">
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
+								<div class="avatar-sm">
+									<img src="../examples/assets/img/bg-404.jpeg" alt="..." class="avatar-img rounded-circle">
+								</div>
+							</a>
+							<ul class="dropdown-menu dropdown-user animated fadeIn">
+								<div class="dropdown-user-scroll scrollbar-outer">
+									<li>
+										<div class="user-box">
+											<div class="avatar-lg"><img src="../examples/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
+											<div class="u-text">
+												<h4>Hizrian</h4>
+												<p class="text-muted">hello@example.com</p><a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" href="#">My Profile</a>
+										<a class="dropdown-item" href="#">My Balance</a>
+										<a class="dropdown-item" href="#">Inbox</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" href="#">Account Setting</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" href="#">Logout</a>
+									</li>
+								</div>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</nav>
+			<!-- End Navbar -->
+		</div>
+
+		<!-- Sidebar -->
+		<div class="sidebar sidebar-style-2">			
+			<div class="sidebar-wrapper scrollbar scrollbar-inner">
+				<div class="sidebar-content">
+
+					<ul class="nav nav-primary">
+						<li class="nav-item active">
+							<a href="index.html" class="collapsed" aria-expanded="false">
+								<i class="fas fa-home"></i>
+								<p>Dashboard</p>
+							</a>
+						</li>
+
+						<li class="nav-section">
+							<span class="sidebar-mini-icon">
+								<i class="fa fa-ellipsis-h"></i>
+							</span>
+							<h4 class="text-section">Components</h4>
+						</li>
+
+						<li class="nav-item">
+							<a  href="">
+								<i class="fas fa-th-list"></i>
+								<p>Servicios</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a  href="pagos.html">
+								<i class="fas fa-money-bill"></i>
+								<p>Pagos</p>
+							</a>
+						</li>
+
+
+						<li class="nav-item">
+							<a data-toggle="collapse" href="">
+								<i class="fas fa-database"></i>
+								<p>Reporte</p>
+							</a>
+						</li>
+						
+						<li class="nav-item">
+							<a data-toggle="collapse" href="#base">
+								<i class="fas fa-user"></i>
+								<p>Usuario</p>
+								<span class="caret"></span>
+							</a>
+							<div class="collapse" id="base">
+								<ul class="nav nav-collapse">
+									<li>
+										<a href="agregar.html">
+											<span class="sub-item">Agregar Usuario</span>
+										</a>
+									</li>
+									<li>
+										<a href="verusuario.html">
+											<span class="sub-item">Ver Usuario</span>
+										</a>
+									</li>
+							
+								</ul>
+							</div>
+						</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- End Sidebar -->
+
+		<div class="main-panel">
+			<div class="content">
+				<div class="panel-header bg-primary-gradient">
+					<div class="page-inner py-4">
+						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+							<div>
+								<h2 class="text-white pb-2 fw-bold">Servicios</h2>
+							</div> 
+						</div>
+					</div> 
+				</div>
+
+      <div class="content mt-4 d-flex flex-wrap">
+   
+    <div class="col-md-3 mb-3">
+        <button type="button" class="btn btn-info btn-lg w-100" data-toggle="modal" data-target="#sedapalModal">
+            <i class="fas fa-tint"></i> SEDAPAL
+        </button>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <button type="button" class="btn btn-success btn-lg w-100">
+            <i class="fas fa-bolt"></i> Luz
+        </button>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <button type="button" class="btn btn-warning btn-lg w-100">
+            <i class="  fa-water"></i> Agua
+        </button>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <button type="button" class="btn btn-danger btn-lg w-100">
+            <i class="fas fa-fire"></i> Gas
+        </button>
+    </div>
+    
+</div>
+
+
+<!-- Modal -->
+<!-- Modal -->
+<div class="modal fade" id="sedapalModal" tabindex="-1" role="dialog" aria-labelledby="sedapalModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Consultar y Pagar Suministro</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Paso 1: Consultar -->
+        <div id="consultaSuministro">
+          <div class="form-group">
+            <label for="codigoSuministro">Código de Suministro</label>
+            <input type="text" class="form-control" id="codigoSuministro" placeholder="Ingrese código">
+          </div>
+          <button id="btnConsultar" class="btn btn-primary w-100">Consultar</button>
+        </div>
+
+        <!-- Paso 2: Info y pago -->
+        <div id="infoCliente" style="display:none; margin-top:15px;">
+          <p>
+            <strong>Código de Suministro:</strong> 
+            <span id="codigoSuministroTexto"></span>
+          </p>
+          <p><strong>Cliente:</strong> <span id="nombreCliente"></span></p>
+          <p><strong>Deuda Total:</strong> S/ <span id="deudaTotal"></span></p>
+          <p><strong>Servicio:</strong> <span id="nombreServicio"></span></p>
+
+          <div class="form-group">
+            <label for="tipoPago">Tipo de Pago</label>
+            <select class="form-control" id="tipoPago">
+              <option value="TODO">Todo</option>
+              <option value="VARIOS">Varios</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="periodosVarios" style="display:none;">
+            <label>Seleccione periodos a pagar:</label>
+            <div id="listaPeriodos" class="d-flex flex-wrap gap-2 mt-2"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="metodoPago">Método de Pago</label>
+            <select class="form-control" id="metodoPago">
+              <option>YAPE</option>
+              <option>PLIN</option>
+              <option>TARJETA</option>
+            </select>
+          </div>
+
+          <button id="btnPagar" class="btn btn-success w-100 mt-2">Pagar</button>
+        </div>
+
+        <!-- Comprobante -->
+        <div id="comprobantePago" style="display:none; margin-top:15px;">
+          <h5>Comprobante</h5>
+          <p><strong>Monto Pagado:</strong> S/ <span id="montoPagado"></span></p>
+          <p><strong>Código Operación:</strong> <span id="codigoOperacion"></span></p>
+          <p><strong>Número Comprobante:</strong> <span id="numeroComprobante"></span></p>
+          <p><strong>Periodos Pagados:</strong> <span id="periodosPagados"></span></p>
+          <p><strong>Fecha Pago:</strong> <span id="fechaPago"></span></p>
+          <p><strong>Deuda Restante:</strong> S/ <span id="deudaRestante"></span></p>
+		  
+		  <div class="mt-3 d-flex justify-content-between">
+    <button id="btnGenerarComprobante" class="btn btn-primary">Generar Comprobante</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+  </div>
+</div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+   </div>
+              <!-- FOTTER -->
+			<footer class="footer">
+				
+				<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit</p>
+
+			</footer>
+		</div>		
+	</div>
+	<!--   Core JS Files   -->
+	<script src="../examples/assets/js/core/jquery.3.2.1.min.js"></script>
+	<script src="../examples/assets/js/core/popper.min.js"></script>
+	<script src="../examples/assets/js/core/bootstrap.min.js"></script>
+
+	<!-- jQuery UI -->
+	<script src="../examples/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+	<script src="../examples/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+	<!-- jQuery Scrollbar -->
+	<script src="../examples/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+
+	<!-- Chart JS -->
+	<script src="../examples/assets/js/plugin/chart.js/chart.min.js"></script>
+
+	<!-- jQuery Sparkline -->
+	<script src="../examples/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+	<!-- Chart Circle -->
+	<script src="../examples/assets/js/plugin/chart-circle/circles.min.js"></script>
+
+	<!-- Datatables -->
+	<script src="../examples/assets/js/plugin/datatables/datatables.min.js"></script>
+
+	<!-- Bootstrap Notify -->
+	<script src="../examples/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+	<!-- jQuery Vector Maps -->
+	<script src="../examples/assets/js/plugin/jqvmap/jquery.vmap.min.js"></script>
+	<script src="../examples/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
+
+	<!-- Sweet Alert -->
+	<script src="../examples/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+	<!-- Atlantis JS -->
+	<script src="../examples/assets/js/atlantis.min.js"></script>
+
+	<!-- Atlantis DEMO methods, don't include it in your project! -->
+	<script src="../examples/assets/js/setting-demo.js"></script>
+	<script src="../examples/assets/js/demo.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+$(document).ready(function(){
+
+  // Consultar suministro
+  $('#btnConsultar').click(function(e){
+    e.preventDefault();
+    const codigo = $('#codigoSuministro').val().trim();
+    if(codigo === ""){
+        alert("Ingrese un código de suministro");
+        return;
+    }
+
+    $('#consultaSuministro').hide();
+
+    // Simulación de respuesta del microservicio
+    const respuesta = {
+        codigoSuministro: codigo,
+        nombreCliente: "Rolando Guadalupe",
+        deudaTotal: 40.62,
+        nombreServicio: "Entel",
+        mesesPendientes: ["2025-01", "2025-02"]
+    };
+
+    // Mostrar info
+    $('#codigoSuministroTexto').text(respuesta.codigoSuministro);
+    $('#nombreCliente').text(respuesta.nombreCliente);
+    $('#deudaTotal').text(respuesta.deudaTotal.toFixed(2));
+    $('#nombreServicio').text(respuesta.nombreServicio);
+
+    // Generar botones de periodos
+    const lista = $('#listaPeriodos').empty();
+    if(respuesta.mesesPendientes.length > 1){
+      $('#periodosVarios').show();
+      respuesta.mesesPendientes.forEach(p => {
+        const btn = $(`<button type="button" class="btn btn-outline-primary btn-sm periodo-btn" data-periodo="${p}">${p}</button>`);
+        btn.on('click', function(){
+          $(this).toggleClass('btn-outline-primary btn-primary');
+        });
+        lista.append(btn);
+      });
+    } else {
+      $('#periodosVarios').hide();
+    }
+
+    $('#infoCliente').show();
+    $('#comprobantePago').hide();
+  });
+
+  // Mostrar/ocultar periodos según tipo de pago
+  $('#tipoPago').change(function(){
+    if($(this).val() === "VARIOS"){
+      $('#periodosVarios').show();
+    } else {
+      $('#periodosVarios').hide();
+    }
+  });
+
+  // Pagar
+  $('#btnPagar').click(function(){
+    let periodos = [];
+    if($('#tipoPago').val() === "TODO"){
+      periodos = $('.periodo-btn').map((i,e)=>$(e).data('periodo')).get();
+    } else {
+      periodos = $('.periodo-btn.btn-primary').map((i,e)=>$(e).data('periodo')).get();
+      if(periodos.length === 0){
+        alert("Seleccione al menos un periodo");
+        return;
+      }
+    }
+
+    // Simular pago
+    const montoUnitario = 20.31; // Puedes calcularlo dinámicamente
+    const monto = montoUnitario * periodos.length;
+    const respuestaPago = {
+      success: true,
+      montoPagado: monto,
+      codigoOperacion: "OP-" + Date.now(),
+      numeroComprobante: "CMP-" + Date.now(),
+      periodosPagados: periodos,
+      fechaPago: new Date().toLocaleString('es-PE'),
+      deudaRestante: 0.0
+    };
+
+    // Mostrar comprobante
+    $('#montoPagado').text(respuestaPago.montoPagado.toFixed(2));
+    $('#codigoOperacion').text(respuestaPago.codigoOperacion);
+    $('#numeroComprobante').text(respuestaPago.numeroComprobante);
+    $('#periodosPagados').text(respuestaPago.periodosPagados.join(', '));
+    $('#fechaPago').text(respuestaPago.fechaPago);
+    $('#deudaRestante').text(respuestaPago.deudaRestante.toFixed(2));
+
+    $('#infoCliente').hide();
+    $('#comprobantePago').show();
+  });
+
+  // Generar reporte PDF
+  $('#btnGenerarComprobante').click(function(){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text("Comprobante de Pago", 20, 20);
+    doc.setFontSize(12);
+
+    doc.text(`Código de Operación: ${$('#codigoOperacion').text()}`, 20, 40);
+    doc.text(`Número de Comprobante: ${$('#numeroComprobante').text()}`, 20, 50);
+    doc.text(`Cliente: ${$('#nombreCliente').text()}`, 20, 60);
+    doc.text(`Servicio: ${$('#nombreServicio').text()}`, 20, 70);
+    doc.text(`Monto Pagado: S/. ${$('#montoPagado').text()}`, 20, 80);
+    doc.text(`Periodos Pagados: ${$('#periodosPagados').text()}`, 20, 90);
+    doc.text(`Fecha de Pago: ${$('#fechaPago').text()}`, 20, 100);
+    doc.text(`Deuda Restante: S/. ${$('#deudaRestante').text()}`, 20, 110);
+
+    doc.save(`Comprobante_${$('#codigoOperacion').text()}.pdf`);
+  });
+
+});
+
+</script>
+</body>
+</html>

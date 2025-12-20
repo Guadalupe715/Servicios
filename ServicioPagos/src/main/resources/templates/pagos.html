@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="components/head :: head"></head>
+<body>
+<div class="wrapper">
+    <!-- Navbar -->
+    <div th:replace="components/navbar :: navbar"></div>
+    <!-- Sidebar -->
+    <div th:replace="components/sidebar :: sidebar"></div>
+    <!-- Contenido -->
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-4">
+                    <h2 class="text-white fw-bold">Ver Pagos</h2>
+                </div>
+            </div>
+
+            <!-- Tabla -->
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered table-head-bg-primary mx-auto" style="width: 90%;">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Usuarios</th>
+                        <th>Servicios</th>
+                        <th>Cuenta Suministro</th>
+                        <th>Metodo Pago</th>
+                        <th>Codigo Operacion</th>
+                        <th>Numero Comprobante</th>
+                        <th>Fecha Pago</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p : ${pagos}">
+                        <td th:text="${p.idPagos}"></td>
+                        <td th:text="${p.usuarios.nombre}"></td>
+                        <td th:text="${p.servicios.nombre}"></td>
+                        <td th:text="${p.cuentaSuministro.codigoSuministro}"></td>
+                        <td th:text="${p.metodoPago.nombre}"></td>
+                        <td th:text="${p.codigoOperacion}"></td>
+                        <td th:text="${p.numeroComprobante}"></td>
+                        <td th:text="${p.fechaPago}"></td>
+                        <td>
+                            <span th:if="${p.estado == 'PENDIENTE'}" class="badge bg-warning text-dark">Pendiente</span>
+                            <span th:if="${p.estado == 'COMPLETADO'}" class="badge bg-success">Completado</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/pagos/pdf/{id}(id=${p.idPagos})}" class="btn btn-sm btn-success">Ver</a>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer text-center">
+            <p>© 2025 - Sistema de Gestión</p>
+        </footer>
+    </div>
+</div>
+
+<!-- JS -->
+<script th:src="@{/assets/js/core/jquery.3.2.1.min.js}"></script>
+<script th:src="@{/assets/js/core/popper.min.js}"></script>
+<script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
+<script th:src="@{/assets/js/plugin/chart.js/chart.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js}"></script>
+<script th:src="@{/assets/js/plugin/chart-circle/circles.min.js}"></script>
+<script th:src="@{/assets/js/plugin/datatables/datatables.min.js}"></script>
+<script th:src="@{/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jqvmap/jquery.vmap.min.js}"></script>
+<script th:src="@{/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js}"></script>
+<script th:src="@{/assets/js/plugin/sweetalert/sweetalert.min.js}"></script>
+<script th:src="@{/assets/js/atlantis.min.js}"></script>
+<script th:src="@{/assets/js/setting-demo.js}"></script>
+<script th:src="@{/assets/js/demo.js}"></script>
+
+</body>
+</html>

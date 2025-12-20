@@ -1,0 +1,71 @@
+<div th:fragment="sidebar">
+    <div class="sidebar sidebar-style-2">
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-primary">
+                    <li class="nav-item active">
+                        <a th:href="@{/}" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-home"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+                        <h4 class="text-section">Components</h4>
+                    </li>
+
+                    <li class="nav-item">
+                        <a data-toggle="collapse" href="#collapsServicios">
+                            <i class="fas fa-th-list"></i>
+                            <p>Servicios</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="collapsServicios">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a th:href="@{/servicios/ver}"><span class="sub-item">Ver Servicios</span></a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/servicios/agregar}"><span class="sub-item">Agregar Servicio</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a th:href="@{/pagos/ver}">
+                            <i class="fas fa-money-bill"></i>
+                            <p>Pagos</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a th:href="@{/reporte.html}">
+                            <i class="fas fa-database"></i>
+                            <p>Reporte</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a data-toggle="collapse" href="#collapsUsuarios">
+                            <i class="fas fa-user"></i>
+                            <p>Usuario</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="collapsUsuarios">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a th:href="@{/agregarUsuario}"><span class="sub-item">Agregar Usuario</span></a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/verusuarios}"><span class="sub-item">Ver Usuario</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

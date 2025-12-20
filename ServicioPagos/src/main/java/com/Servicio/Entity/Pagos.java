@@ -30,5 +30,7 @@ public class Pagos {
 
     private String codigoOperacion;
     private String numeroComprobante;
+    private String estado = "PENDIENTE";
     private LocalDateTime fechaPago;
+
 }
