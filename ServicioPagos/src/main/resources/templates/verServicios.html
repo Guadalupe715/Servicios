@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="components/head :: head"></head>
 <body>
 <div class="wrapper">
@@ -21,7 +21,7 @@
                 <div class="col-md-3 mb-3" th:each="servicio : ${servicios}">
                     <button type="button"
                             th:class="'btn btn-' + ${servicio.color} + ' btn-lg w-100'"
-                            th:attr="onclick=|abrirModalSuministro('${servicio.nombre}', '${servicio.empresa.nombre}')|">
+                            th:attr="onclick=|abrirModalSuministro('${servicio.nombre}', '${servicio.empresa.nombre}', ${servicio.idServicios})|">
                     <span th:text="${servicio.nombre}">Servicio</span>
                     </button>
                 </div>
@@ -32,17 +32,20 @@
             <div class="modal fade" id="sedapalModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header bg-primary text-white">
+                        <div class="modal-header bg-info text-white">
                             <h5 id="tituloServicio">Servicio - Código de Suministro</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
+                            <input type="hidden" id="servicioIdHidden" name="idServicio">
                             <input type="hidden" id="servicioHidden">
                             <input type="hidden" id="empresaHidden">
+                            <input type="hidden" id="metodoPagoIdHidden" name="idMetodoPago">
                             <div class="form-group">
                                 <label>Código de Suministro</label>
                                 <input type="text" id="codigoSuministro" class="form-control" required>
                             </div>
-                            <button class="btn btn-primary w-100" onclick="continuarCliente()">Consultar</button>
+                              <button class="btn btn-info w-100" onclick="continuarCliente()">Consultar</button>
                         </div>
                     </div>
                 </div>
@@ -101,30 +104,43 @@
             </div>
 
             <!-- MODAL CONFIRMACION -->
-            <!-- MODAL CONFIRMACION MEJORADO Y BOTONES MÁS GRANDES -->
             <div class="modal fade" id="modalConfirmacion" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <!-- Color de header -->
-                        <div class="modal-header bg-warning text-dark">
+                        <div class="modal-header bg-info text-dark">
                             <h5>Confirmar Cuenta de Suministro</h5>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
                         <div class="modal-body" id="contenidoConfirmacion">
-                            <!-- Aquí se llenarán todos los datos con JS -->
                         </div>
 
                         <div class="modal-footer d-flex justify-content-between">
-                            <!-- Botón Volver -->
                             <button class="btn btn-secondary btn-lg w-45 me-2" onclick="volverAlCliente()">Volver</button>
 
-                            <!-- Botón Generar Pago -->
                             <button class="btn btn-success btn-lg w-45" onclick="guardarCuenta()">Generar Pago</button>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+            <!-- MODAL COMPROBANTE -->
+            <div class="modal fade" id="modalComprobante" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content border-success shadow">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="fw-bold">Comprobante de Pago Generado</h5>
+                        </div>
+                        <div class="modal-body" id="contenidoComprobante"></div>
+                        <div class="modal-footer justify-content-between">
+                            <a id="descargarPdf" href="#" class="btn btn-primary fw-bold">Descargar PDF</a>
+                            <button class="btn btn-secondary fw-bold" data-bs-dismiss="modal" onclick="redirigirVerEmpresa()">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <!-- Footer -->
         <footer class="footer text-center">
@@ -151,6 +167,18 @@
 <script th:src="@{/assets/js/atlantis.min.js}"></script>
 <script th:src="@{/assets/js/setting-demo.js}"></script>
 <script th:src="@{/assets/js/demo.js}"></script>
+
+    <script>
+        function redirigirVerEmpresa() {
+          window.location.href = "/empresa/ver";
+        }
+        function reiniciarYRedirigir() {
+          limpiarModalCliente();
+          limpiarModalInicio();
+          redirigirVerEmpresa();
+        }
+
+    </script>
     <script th:src="@{/assets/js/modal-cliente.js}"></script>
 </body>
 </html>
