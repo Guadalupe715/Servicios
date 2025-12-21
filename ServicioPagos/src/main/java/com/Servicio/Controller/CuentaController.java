@@ -4,33 +4,28 @@ import com.Servicio.DTOresponse.CuentaResponseDTO;
 import com.Servicio.DTOresponse.Request.CuentaRequestDTO;
 import com.Servicio.Service.CuentaServicios;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("api/cuenta")
+@Controller
+@RequestMapping("/cuenta")
 public class CuentaController {
     @Autowired
     private CuentaServicios cuentaServicios;
 
-    @PostMapping("/save")
-    public ResponseEntity<CuentaResponseDTO> GuardarCuenta
-            (@RequestBody CuentaRequestDTO request) {
+    @PostMapping("/registrar")
+    public String registrarCuenta(@ModelAttribute CuentaRequestDTO request, Model model) {
         CuentaResponseDTO cuenta = cuentaServicios.crear(request);
-        if (cuenta == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(cuenta);
-    }
-    @GetMapping("/list")
-    public ResponseEntity<List<CuentaResponseDTO>> ListarCuentas(){
-        List<CuentaResponseDTO> cuenta = cuentaServicios.listar();
-        if(cuenta.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(cuenta);
+
+        List<CuentaResponseDTO> listaCuentas = cuentaServicios.listar();
+
+        model.addAttribute("cuentaConfirmacion", cuenta);
+        model.addAttribute("listaCuentas",listaCuentas);
+
+        return "verServicios";
     }
 
 }

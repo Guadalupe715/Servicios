@@ -19,7 +19,7 @@ public class CuentaSuministro {
     private String nombreCliente;
     private double monto;
     private String telefono;
-    private String serviciosOfrecidos;
+    private String serviciosOfrecidos = "Ofrecemos serivicios de pagos de Agua, Luz, Internet" ;
     private String publicidad;
     @ManyToOne
     @JoinColumn(name = "idServicios")

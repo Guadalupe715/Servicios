@@ -16,7 +16,7 @@ public class Servicios {
     private String nombre;
     private String icono;
     private String color;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idEmpresa")
     private Empresa empresa;
 }

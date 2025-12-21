@@ -13,136 +13,73 @@
                     <h2 class="text-white fw-bold">Agregar Servicio</h2>
                 </div>
             </div>
+            <div class="page-inner mt-4">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
 
-            <div class="d-flex justify-content-center mt-4">
-                <div style="width: 600px;">
-                    <form method="post" th:action="@{/servicios/guardar}">
+                        <div class="card">
+                            <div class="card-body">
 
-                        <!-- Nombre del servicio -->
-                        <div class="mb-4">
-                            <label for="nombre" class="form-label">Nombre del Servicio</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese nombre" required>
-                        </div>
+                                <form th:action="@{/servicios/guardar}"
+                                      th:object="${servicio}"
+                                      method="post">
 
-                        <!-- Iconos -->
-                        <div class="mb-4">
-                            <label class="form-label">Selecciona un Icono</label>
-                            <div class="d-flex flex-wrap gap-4 mt-3" style="overflow-x:auto; padding-bottom:10px;">
-                                <!-- Icono -->
-                                <label class="d-flex flex-column align-items-center" style="min-width:70px;">
-                                    <input type="radio" name="icono" value="fa-tint" required>
-                                    <i class="fas fa-tint fa-3x mt-2"></i>
-                                    <small>Tint</small>
-                                </label>
-                                <label class="d-flex flex-column align-items-center" style="min-width:70px;">
-                                    <input type="radio" name="icono" value="fa-bolt" required>
-                                    <i class="fas fa-bolt fa-3x mt-2"></i>
-                                    <small>Bolt</small>
-                                </label>
-                                <label class="d-flex flex-column align-items-center" style="min-width:70px;">
-                                    <input type="radio" name="icono" value="fa-water" required>
-                                    <i class="fas fa-water fa-3x mt-2"></i>
-                                    <small>Water</small>
-                                </label>
-                                <label class="d-flex flex-column align-items-center" style="min-width:70px;">
-                                    <input type="radio" name="icono" value="fa-fire" required>
-                                    <i class="fas fa-fire fa-3x mt-2"></i>
-                                    <small>Fire</small>
-                                </label>
-                                <label class="d-flex flex-column align-items-center" style="min-width:70px;">
-                                    <input type="radio" name="icono" value="fa-leaf" required>
-                                    <i class="fas fa-leaf fa-3x mt-2"></i>
-                                    <small>Leaf</small>
-                                </label>
-                                <label class="d-flex flex-column align-items-center" style="min-width:70px;">
-                                    <input type="radio" name="icono" value="fa-star" required>
-                                    <i class="fas fa-star fa-3x mt-2"></i>
-                                    <small>Star</small>
-                                </label>
-                                <label class="d-flex flex-column align-items-center" style="min-width:70px;">
-                                    <input type="radio" name="icono" value="fa-cog" required>
-                                    <i class="fas fa-cog fa-3x mt-2"></i>
-                                    <small>Cog</small>
-                                </label>
-                                <label class="d-flex flex-column align-items-center" style="min-width:70px;">
-                                    <input type="radio" name="icono" value="fa-heart" required>
-                                    <i class="fas fa-heart fa-3x mt-2"></i>
-                                    <small>Heart</small>
-                                </label>
-                                <label class="d-flex flex-column align-items-center" style="min-width:70px;">
-                                    <input type="radio" name="icono" value="fa-moon" required>
-                                    <i class="fas fa-moon fa-3x mt-2"></i>
-                                    <small>Moon</small>
-                                </label>
-                                <label class="d-flex flex-column align-items-center" style="min-width:70px;">
-                                    <input type="radio" name="icono" value="fa-sun" required>
-                                    <i class="fas fa-sun fa-3x mt-2"></i>
-                                    <small>Sun</small>
-                                </label>
+                                    <!-- NOMBRE -->
+                                    <div class="form-group">
+                                        <label>Nombre del Servicio</label>
+                                        <input type="text"
+                                               th:field="*{nombre}"
+                                               class="form-control"
+                                               placeholder="Ej: Agua Potable"
+                                               required>
+                                    </div>
+
+                                    <!-- EMPRESA -->
+                                    <div class="form-group">
+                                        <label>Empresa</label>
+                                        <select class="form-control"
+                                                th:field="*{empresa.idEmpresa}"
+                                                required>
+                                            <option value="">Seleccione una empresa</option>
+                                            <option th:each="emp : ${empresas}"
+                                                    th:value="${emp.idEmpresa}"
+                                                    th:text="${emp.nombre}">
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!-- COLOR -->
+                                    <div class="form-group">
+                                        <label>Color del botón</label>
+                                        <select class="form-control"
+                                                th:field="*{color}"
+                                                required>
+                                            <option value="primary">Azul</option>
+                                            <option value="success">Verde</option>
+                                            <option value="warning">Amarillo</option>
+                                            <option value="danger">Rojo</option>
+                                            <option value="info">Celeste</option>
+                                            <option value="secondary">Gris</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- BOTÓN -->
+                                    <div class="text-right mt-3">
+                                        <button type="submit"
+                                                class="btn btn-primary px-4">
+                                            Guardar Servicio
+                                        </button>
+                                    </div>
+
+                                </form>
+
                             </div>
                         </div>
 
-                        <!-- Colores -->
-                        <div class="mb-4">
-                            <label class="form-label">Selecciona un Color</label>
-                            <div class="row mt-3 g-3"> <!-- g-3 agrega separación entre columnas y filas -->
-                                <div class="col-3">
-                                    <label class="d-flex flex-column align-items-center">
-                                        <input type="radio" name="color" value="primary" required>
-                                        <span class="btn btn-primary btn-lg mt-2 w-100">Azul</span>
-                                    </label>
-                                </div>
-                                <div class="col-3">
-                                    <label class="d-flex flex-column align-items-center">
-                                        <input type="radio" name="color" value="info" required>
-                                        <span class="btn btn-info btn-lg mt-2 w-100">Celeste</span>
-                                    </label>
-                                </div>
-                                <div class="col-3">
-                                    <label class="d-flex flex-column align-items-center">
-                                        <input type="radio" name="color" value="success" required>
-                                        <span class="btn btn-success btn-lg mt-2 w-100">Verde</span>
-                                    </label>
-                                </div>
-                                <div class="col-3">
-                                    <label class="d-flex flex-column align-items-center">
-                                        <input type="radio" name="color" value="warning" required>
-                                        <span class="btn btn-warning btn-lg mt-2 w-100">Naranja</span>
-                                    </label>
-                                </div>
-                                <div class="col-3">
-                                    <label class="d-flex flex-column align-items-center">
-                                        <input type="radio" name="color" value="danger" required>
-                                        <span class="btn btn-danger btn-lg mt-2 w-100">Rojo</span>
-                                    </label>
-                                </div>
-                                <div class="col-3">
-                                    <label class="d-flex flex-column align-items-center">
-                                        <input type="radio" name="color" value="secondary" required>
-                                        <span class="btn btn-secondary btn-lg mt-2 w-100">Gris</span>
-                                    </label>
-                                </div>
-                                <div class="col-3">
-                                    <label class="d-flex flex-column align-items-center">
-                                        <input type="radio" name="color" value="dark" required>
-                                        <span class="btn btn-dark btn-lg mt-2 w-100">Negro</span>
-                                    </label>
-                                </div>
-                                <div class="col-3">
-                                    <label class="d-flex flex-column align-items-center">
-                                        <input type="radio" name="color" value="default" required>
-                                        <span class="btn btn-light btn-lg mt-2 w-100">Defecto</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- Botón Guardar -->
-                        <button type="submit" class="btn btn-primary w-100 btn-lg mt-3">Guardar Servicio</button>
-                    </form>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
