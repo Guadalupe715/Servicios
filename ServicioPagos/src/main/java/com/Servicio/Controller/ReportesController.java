@@ -1,4 +1,4 @@
-package com.Servicio;
+package com.Servicio.Controller;
 
 import com.Servicio.DTOresponse.ReportesResponseDTO;
 import com.Servicio.DTOresponse.Request.ReportesRequestDTO;

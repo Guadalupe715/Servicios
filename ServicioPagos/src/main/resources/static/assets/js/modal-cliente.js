@@ -14,17 +14,10 @@ function abrirModalSuministro(nombreServicio, nombreEmpresa, idServicio) {
 // MODAL 2: Continuar al modal cliente
 // --------------------------------
 function continuarCliente() {
-    const codigoSuministro = document.getElementById('codigoSuministro').value.trim();
-
-    if(!codigoSuministro) {
-        alert("Ingrese el código de suministro antes de continuar.");
-        return;
-    }
-
     // Copiar datos de modal 1 al modal cliente
     document.getElementById('empresaTexto').innerText = document.getElementById('empresaHidden').value;
     document.getElementById('servicioTexto').innerText = document.getElementById('servicioHidden').value;
-    document.getElementById('codigoTexto').innerText = codigoSuministro;
+    document.getElementById('codigoTexto').innerText = document.getElementById('codigoSuministro').value;
 
     $('#sedapalModal').modal('hide');
     $('#modalCliente').modal('show');
@@ -34,20 +27,14 @@ function continuarCliente() {
 // MODAL 3: Abrir modal de confirmación
 // --------------------------------
 function abrirConfirmacion() {
-    const nombreCliente = document.getElementById('nombre').value.trim();
-    const telefono = document.getElementById('telefono').value.trim();
-    const monto = document.getElementById('monto').value.trim();
-    const descripcion = document.getElementById('descripcion').value.trim();
-    const metodoPago = document.getElementById('metodoPago').selectedOptions[0].text;
-
-    if(!nombreCliente || !telefono || !monto || !descripcion) {
-        alert("Por favor, complete todos los campos antes de continuar.");
-        return;
-    }
-
     const empresa = document.getElementById('empresaTexto').innerText;
     const servicio = document.getElementById('servicioTexto').innerText;
     const codigo = document.getElementById('codigoTexto').innerText;
+    const nombreCliente = document.getElementById('nombre').value;
+    const telefono = document.getElementById('telefono').value;
+    const metodoPago = document.getElementById('metodoPago').selectedOptions[0].text;
+    const monto = document.getElementById('monto').value;
+    const descripcion = document.getElementById('descripcion').value;
 
     const contenido = `
         <div class="row mb-2">
@@ -69,6 +56,7 @@ function abrirConfirmacion() {
     `;
 
     document.getElementById('contenidoConfirmacion').innerHTML = contenido;
+
     $('#modalCliente').modal('hide');
     $('#modalConfirmacion').modal('show');
 }
@@ -82,32 +70,27 @@ function volverAlCliente() {
 }
 
 // --------------------------------
-// Guardar cuenta y pago en backend
+// Guardar cuenta en backend
 // --------------------------------
 function guardarCuenta() {
-    const codigo = document.getElementById('codigoSuministro').value.trim();
-    const nombre = document.getElementById('nombre').value.trim();
-    const telefono = document.getElementById('telefono').value.trim();
-    const monto = document.getElementById('monto').value.trim();
-    const descripcion = document.getElementById('descripcion').value.trim();
+    // Asignar idMetodoPago
     const idMetodoPago = document.getElementById('metodoPago').value;
+    const descripcion = document.getElementById('descripcion').value.trim();
+    document.getElementById('metodoPagoIdHidden').value = idMetodoPago;
+    const empresaServicio = document.getElementById('empresaTexto').innerText;
 
-    if(!codigo || !nombre || !telefono || !monto || !descripcion || !idMetodoPago) {
-        alert("Por favor, complete todos los campos antes de continuar.");
-        return;
-    }
-
-    // 1️⃣ Guardar cuenta de suministro
+    // Datos de la cuenta de suministro
     const cuentaData = new URLSearchParams();
-    cuentaData.append("codigoSuministro", codigo);
-    cuentaData.append("nombreCliente", nombre);
-    cuentaData.append("telefono", telefono);
-    cuentaData.append("monto", monto);
-    cuentaData.append("serviciosOfrecidos", descripcion);
-    cuentaData.append("publicidad", "Publicidad ejemplo");
+    cuentaData.append("codigoSuministro", document.getElementById('codigoSuministro').value);
+    cuentaData.append("nombreCliente", document.getElementById('nombre').value);
+    cuentaData.append("telefono", document.getElementById('telefono').value);
+    cuentaData.append("monto", document.getElementById('monto').value);
+    cuentaData.append("serviciosOfrecidos", document.getElementById('descripcion').value);
+    cuentaData.append("publicidad", descripcion);
     cuentaData.append("idServicio", document.getElementById('servicioIdHidden').value);
     cuentaData.append("idMetodoPago", idMetodoPago);
 
+    // 1️⃣ Guardar la cuenta
     fetch("/cuenta/registrar", {
         method: "POST",
         body: cuentaData
@@ -116,9 +99,9 @@ function guardarCuenta() {
     .then(cuentaResp => {
         console.log("Cuenta guardada:", cuentaResp);
 
-        // 2️⃣ Guardar pago asociado
+        // 2️⃣ Crear el pago asociado
         const pagoData = {
-            idUsuarios: 1, // Cambiar según usuario actual
+            idUsuarios: 1, // Cambia esto según tu sesión / usuario actual
             idServicios: document.getElementById('servicioIdHidden').value,
             idMetodo: idMetodoPago,
             idCuenta: cuentaResp.idCuentaSuministro
@@ -134,33 +117,51 @@ function guardarCuenta() {
     .then(pagoResp => {
         console.log("Pago guardado:", pagoResp);
 
-        // 3️⃣ Mostrar modal de comprobante
-        const contenido = `
-            <div class="row mb-2">
-                <div class="col-md-6"><strong>Empresa:</strong> ${pagoResp.nombreEmpresa}</div>
-                <div class="col-md-6"><strong>Servicio:</strong> ${pagoResp.servicio}</div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-md-4"><strong>Código Suministro:</strong> ${pagoResp.cliente.codigoSuministro}</div>
-                <div class="col-md-4"><strong>Cliente:</strong> ${pagoResp.cliente.nombreCliente}</div>
-                <div class="col-md-4"><strong>Teléfono:</strong> ${pagoResp.cliente.telefono}</div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-md-4"><strong>Método Pago:</strong> ${pagoResp.metodoPago}</div>
-                <div class="col-md-4"><strong>Monto:</strong> ${pagoResp.monto}</div>
-                <div class="col-md-4"><strong>Fecha:</strong> ${new Date(pagoResp.fechaPago).toLocaleString()}</div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-md-6"><strong>Servicios ofrecidos:</strong> ${pagoResp.serviciosOfrecidos}</div>
-                <div class="col-md-6"><strong>Publicidad:</strong> ${pagoResp.publicidad}</div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-md-6"><strong>Código Operación:</strong> ${pagoResp.codigoOperacion}</div>
-                <div class="col-md-6"><strong>Número Comprobante:</strong> ${pagoResp.numeroComprobante}</div>
-            </div>
-        `;
-        document.getElementById('contenidoComprobante').innerHTML = contenido;
+        // 3️⃣ Mostrar modal de comprobante con todos los datos
+const contenido = `
+    <div class="card p-4 shadow-sm border">
 
+        <!-- Fila 0: Tu empresa (emisor) -->
+        <div class="row mb-3">
+            <div class="col-md-12 text-center"><strong>${pagoResp.nombreEmpresa}</strong></div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12 text-center">
+            ${pagoResp.direccion}
+            </div>
+        </div>
+
+        <!-- Fila 1: Entidad de servicio -->
+        <div class="row mb-3">
+            <div class="col-md-4"><strong>Entidad:</strong> ${empresaServicio}</div>
+            <div class="col-md-4"><strong>Servicio:</strong> ${pagoResp.servicio}</div>
+            <div class="col-md-4"><strong>Código Suministro:</strong> ${pagoResp.cliente.codigoSuministro}</div>
+
+        </div>
+
+        <!-- Fila 2: Código suministro, Monto, Método -->
+        <div class="row mb-3">
+            <div class="col-md-4"><strong>Monto a Pagar:</strong> S/. ${pagoResp.monto}</div>
+            <div class="col-md-4"><strong>Método Pago:</strong> ${pagoResp.metodoPago}</div>
+            <div class="col-md-4"><strong>Fecha:</strong> ${new Date(pagoResp.fechaPago).toLocaleString()}</div>
+
+        </div>
+
+        <!-- Fila 3: Fecha, Código Operación, Número Comprobante -->
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Código Operación:</strong> ${pagoResp.codigoOperacion}</div>
+            <div class="col-md-6"><strong>Número Comprobante:</strong> ${pagoResp.numeroComprobante}</div>
+        </div>
+
+        <!-- Fila 4: Publicidad y Servicios Ofrecidos -->
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Publicidad:</strong> ${pagoResp.publicidad}</div>
+            <div class="col-md-6"><strong>Servicios Ofrecidos:</strong> ${pagoResp.serviciosOfrecidos}</div>
+        </div>
+    </div>
+`;
+
+        document.getElementById('contenidoComprobante').innerHTML = contenido;
         $('#modalConfirmacion').modal('hide');
         $('#modalComprobante').modal('show');
     })
@@ -169,7 +170,3 @@ function guardarCuenta() {
         alert("Error al registrar el pago");
     });
 }
-
-// --------------------------------
-// Reiniciar todos los campos al cerrar modales
-// --------------------------------
