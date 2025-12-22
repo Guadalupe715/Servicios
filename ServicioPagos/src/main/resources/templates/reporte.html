@@ -16,37 +16,157 @@
                 </div>
             </div>
 
-            <!-- Tabla -->
-            <div class="table-responsive mt-4">
-                <table class="table table-bordered table-head-bg-primary mx-auto" id="tablePagos" style="width: 90%">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Fecha Inicio</th>
-                        <th>Fecha Fin</th>
-                        <th>Fecha Consulta</th>
-                        <th>Accion</th>
+            <div class="card shadow-sm mt-4" style="width:90%;margin:auto;">
+                <div class="card-header bg-white border-0">
+                    <h5 class="fw-bold text-primary mb-0">
+                        <i class="fas fa-filter"></i> Filtros de búsqueda
+                    </h5>
+                </div>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="r : ${reportes}">
-                        <td th:text="${r.reportes.idReportes}"></td>
-                        <td th:text="${r.reportes.fechaInicio}"></td>
-                        <td th:text="${r.reportes.fechaFin}"></td>
-                        <td th:text="${r.reportes.fechaConsulta}"></td>
+                <div class="card-body pt-2">
+                    <form th:action="@{/report/consultar}" method="get" class="row g-3 align-items-end">
 
-                        <td>
-                            <a th:href="@{/pagos/pdf/{id}(id=${p.idPagos})}" class="btn btn-sm btn-success">Ver</a>
-                        </td>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Fecha Inicio</label>
+                            <input type="date" name="fechaInicio"
+                                   class="form-control"
+                                   th:value="${fechaInicio}">
+                        </div>
 
-                    </tr>
-                    </tbody>
-                </table>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Fecha Fin</label>
+                            <input type="date" name="fechaFin"
+                                   class="form-control"
+                                   th:value="${fechaFin}">
+                        </div>
+
+                        <div class="col-md-3">
+                            <button class="btn btn-primary w-100">
+                                <i class="fas fa-search"></i> Consultar
+                            </button>
+                        </div>
+
+                        <div class="col-md-3">
+                            <a th:href="@{/report/ver}" class="btn btn-outline-secondary w-100">
+                                <i class="fas fa-eraser"></i> Limpiar
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
             </div>
-        </div>
 
-        <!-- Footer -->
+            <!-- Tabla -->
+            <div class="card shadow-sm mt-4 mb-4" style="width:90%;margin:auto;">
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+
+                    <h5 class="fw-bold text-primary mb-0">
+                        <i class="fas fa-table"></i> Listado de pagos
+                    </h5>
+
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-file-excel"></i> Excel
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered align-middle text-center"
+                               id="tablePagos">
+
+                            <thead class="table-primary">
+                            <tr>
+                                <th style="width:5%">#</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Fecha Consulta</th>
+                                <th style="width:10%">Acción</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="r : ${reportes}">
+                                <td></td>
+                                <td th:text="${r.fechaInicio}"></td>
+                                <td th:text="${r.fechaFin}"></td>
+                                <td th:text="${r.fechaConsulta}"></td>
+                                <td>
+                                    <a th:href="@{/report/ver-detalle/{id}(id=${r.idReportes})}"
+                                       class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${reporteTemporal != null}" class="card mt-4 shadow">
+
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        Detalle del reporte
+                        (<span th:text="${reporteTemporal.fechaInicio}"></span>
+                        -
+                        <span th:text="${reporteTemporal.fechaFin}"></span>)
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Suministro</th>
+                            <th>Cliente</th>
+                            <th>Servicio</th>
+                            <th>Monto</th>
+                            <th>Método</th>
+                            <th>Fecha pago</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="d, i : ${detallesTemporales}">
+                            <td th:text="${i.index + 1}"></td>
+                            <td th:text="${d.codigoSuministro}"></td>
+                            <td th:text="${d.nombreCliente}"></td>
+                            <td th:text="${d.servicio}"></td>
+                            <td th:text="${d.monto}"></td>
+                            <td th:text="${d.metodoPago}"></td>
+                            <td th:text="${d.fechaPago}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <hr>
+
+                    <h5>Total generado: S/
+                        <span th:text="${totalGenerado}"></span>
+                    </h5>
+
+                    <ul>
+                        <li th:each="t : ${totalMetodo  }">
+                            <span th:text="${t.key}"></span> :
+                            S/ <span th:text="${t.value}"></span>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+
+            <!-- Footer -->
         <footer class="footer text-center">
             <p>© 2025 - Sistema de Gestión</p>
         </footer>
