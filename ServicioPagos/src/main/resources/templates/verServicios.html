@@ -126,6 +126,7 @@
 
 
             <!-- MODAL COMPROBANTE -->
+            <!-- Modal Comprobante -->
             <div class="modal fade" id="modalComprobante" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content border-success shadow">
@@ -133,14 +134,14 @@
                             <h5 class="fw-bold">Comprobante de Pago Generado</h5>
                         </div>
                         <div class="modal-body" id="contenidoComprobante"></div>
+                        <input type="hidden" id="pagoIdHidden" value="">
                         <div class="modal-footer justify-content-between">
-                            <a id="descargarPdf" href="#" class="btn btn-primary fw-bold">Descargar PDF</a>
+                            <button class="btn btn-primary fw-bold" id="btnDescargarPdf">Descargar PDF</button>
                             <button class="btn btn-secondary fw-bold" data-bs-dismiss="modal" onclick="redirigirVerEmpresa()">Cerrar</button>
                         </div>
                     </div>
                 </div>
             </div>
-
 
             <!-- Footer -->
         <footer class="footer text-center">

@@ -49,9 +49,7 @@ public class ServiciosController {
     }
 
     @PostMapping("/guardar")
-    public String guardarServicio(@ModelAttribute Servicios servicio, @RequestParam Integer empresaId) {
-        Empresa emp = empresaServicios.buscar(empresaId);
-        servicio.setEmpresa(emp);
+    public String guardarServicio(@ModelAttribute Servicios servicio) {
         serviciosServicios.agregar(servicio);
         return "redirect:/servicios/ver";
     }

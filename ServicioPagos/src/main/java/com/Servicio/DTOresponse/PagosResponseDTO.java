@@ -10,8 +10,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PagosResponseDTO {
+    private Integer idPagos;
     private String nombreEmpresa;
     private String direccion;
+    private String ruc;
     private String usuario;
 
     private ClienteResponseDTO cliente;
