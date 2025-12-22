@@ -22,31 +22,20 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Usuarios</th>
-                        <th>Servicios</th>
-                        <th>Cuenta Suministro</th>
-                        <th>Metodo Pago</th>
-                        <th>Codigo Operacion</th>
-                        <th>Numero Comprobante</th>
-                        <th>Fecha Pago</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Fecha Consulta</th>
+                        <th>Accion</th>
+
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="p : ${pagos}">
-                        <td th:text="${p.idPagos}"></td>
-                        <td th:text="${p.usuarios.nombre}"></td>
-                        <td th:text="${p.servicios.nombre}"></td>
-                        <td th:text="${p.cuentaSuministro.codigoSuministro}"></td>
-                        <td th:text="${p.metodoPago.nombre}"></td>
-                        <td th:text="${p.codigoOperacion}"></td>
-                        <td th:text="${p.numeroComprobante}"></td>
-                        <td th:text="${p.fechaPago}"></td>
-                        <td>
-                            <span th:if="${p.estado == 'PENDIENTE'}" class="badge bg-warning text-dark">Pendiente</span>
-                            <span th:if="${p.estado == 'COMPLETADO'}" class="badge bg-success">Completado</span>
-                        </td>
+                    <tr th:each="r : ${reportes}">
+                        <td th:text="${r.reportes.idReportes}"></td>
+                        <td th:text="${r.reportes.fechaInicio}"></td>
+                        <td th:text="${r.reportes.fechaFin}"></td>
+                        <td th:text="${r.reportes.fechaConsulta}"></td>
+
                         <td>
                             <a th:href="@{/pagos/pdf/{id}(id=${p.idPagos})}" class="btn btn-sm btn-success">Ver</a>
                         </td>
