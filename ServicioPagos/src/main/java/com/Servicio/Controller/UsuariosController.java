@@ -1,9 +1,11 @@
 package com.Servicio.Controller;
 
 import com.Servicio.Entity.Usuarios;
+import com.Servicio.Security.UsuarioPrincipal;
 import com.Servicio.Service.UsuariosServicios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +18,14 @@ public class UsuariosController {
     private UsuariosServicios usuariosServicios;
 
     @GetMapping("/verusuarios")
-    public String verUsuario(Model model) {
-        List<Usuarios> usuarios = usuariosServicios.listar();
-        model.addAttribute("usuarios", usuarios);
-
-        Usuarios usuarioLogueado = new Usuarios();
-        usuarioLogueado.setNombre("Hizrian");
-        usuarioLogueado.setEmail("hello@example.com");
-        model.addAttribute("usuarioLogueado", usuarioLogueado);
-
+    public String verUsuario(Model model ,Authentication authentication) {
+        UsuarioPrincipal principal = (UsuarioPrincipal) authentication.getPrincipal();
+        if(principal.getRol().equalsIgnoreCase("ADMIN")) {
+            model.addAttribute("usuarios", usuariosServicios.listar());
+        } else {
+            // EMPLEADO solo puede ver su propio registro
+            model.addAttribute("usuarios", java.util.List.of(usuariosServicios.usuarioLogin(principal.getUsername())));
+        }
         return "verusuarios";
     }
 

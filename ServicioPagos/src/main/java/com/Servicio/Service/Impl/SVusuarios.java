@@ -9,4 +9,5 @@ public interface SVusuarios {
     public Usuarios buscar(Integer idUsuarios);
     public Usuarios agregar(Usuarios usu);
     public boolean eliminar(Integer idUsuarios);
+    public Usuarios usuarioLogin(String user);
 }

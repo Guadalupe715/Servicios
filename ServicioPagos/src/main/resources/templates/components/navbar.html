@@ -4,10 +4,12 @@
         <div class="logo-header" data-background-color="blue">
             <a th:href="@{/}" class="logo"></a>
 
+            <!-- Botón para colapsar sidebar -->
             <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"><i class="icon-menu"></i></span>
             </button>
 
+            <!-- Botón de opciones topbar -->
             <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
 
             <div class="nav-toggle">
@@ -20,6 +22,7 @@
         <!-- Navbar Header -->
         <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
             <div class="container-fluid">
+                <!-- Buscador colapsable -->
                 <div class="collapse" id="search-nav">
                     <form class="navbar-left navbar-form nav-search mr-md-3">
                         <div class="input-group">
@@ -33,42 +36,44 @@
                     </form>
                 </div>
 
+                <!-- Botones y dropdown del usuario -->
                 <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                    <!-- Botón de búsqueda -->
                     <li class="nav-item toggle-nav-search hidden-caret">
                         <a class="nav-link" data-toggle="collapse" href="#search-nav"><i class="fa fa-search"></i></a>
                     </li>
 
+                    <!-- Dropdown del usuario -->
                     <li class="nav-item dropdown hidden-caret">
-                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#">
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
                             <div class="avatar-sm">
-                                <img th:src="@{/examples/assets/img/bg-404.jpeg}" alt="..." class="avatar-img rounded-circle">
+                                <img th:src="@{/examples/assets/img/bg-404.jpeg}" alt="Foto Usuario" class="avatar-img rounded-circle">
                             </div>
                         </a>
+
                         <ul class="dropdown-menu dropdown-user animated fadeIn">
-                            <div class="dropdown-user-scroll scrollbar-outer">
-                                <li>
-                                    <div class="user-box">
-                                        <div class="avatar-lg">
-                                            <img th:src="@{/examples/assets/img/bg-404.jpeg}" alt="image profile" class="avatar-img rounded">
-                                        </div>
-                                        <div class="u-text">
-                                            <h4>Hizrian</h4>
-                                            <p class="text-muted">hello@example.com</p>
-                                            <a th:href="@{/profile.html}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
-                                        </div>
+                            <li>
+                                <div class="user-box text-center">
+                                    <div class="avatar-lg">
+                                        <img th:src="@{/examples/assets/img/bg-404.jpeg}" alt="Foto Usuario" class="avatar-img rounded">
                                     </div>
-                                </li>
-                                <li>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">My Profile</a>
-                                    <a class="dropdown-item" href="#">My Balance</a>
-                                    <a class="dropdown-item" href="#">Inbox</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Account Setting</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Logout</a>
-                                </li>
-                            </div>
+                                    <div class="u-text mt-2">
+                                        <div th:with="usuarioPrincipal=${#authentication != null and #authentication.principal instanceof T(com.Servicio.Security.UsuarioPrincipal) ? #authentication.principal : null}">
+                                            <h5 th:text="${usuarioPrincipal != null ? usuarioPrincipal.nombre : 'Usuario'}">Nombre Usuario</h5>
+                                            <p th:text="${usuarioPrincipal != null ? usuarioPrincipal.email : 'correo@example.com'}">correo@example.com</p>
+                                            <p th:text="${usuarioPrincipal != null ? usuarioPrincipal.rol : 'ROL'}">ROL</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                                <!-- Botón para cerrar sesión -->
+                                <form th:action="@{/logout}" method="post" style="display: inline;">
+                                    <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                                </form>
+                            </li>
                         </ul>
                     </li>
                 </ul>

@@ -52,6 +52,7 @@
                                 <div class="input-group mb-4">
                                     <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                     <input th:value="${usuario.password}" type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Ingrese contraseña">
+                                    <small th:if="${usuario.idUsuario != null}"></small>
                                 </div>
                             </div>
 
@@ -60,8 +61,8 @@
                                 <div class="input-group mb-4">
                                     <span class="input-group-text"><i class="fas fa-layer-group"></i></span>
                                     <select class="form-control form-control-lg" id="rol" name="rol">
-                                        <option value="Administrador" th:selected="${usuario.rol == 'Administrador'}">Administrador</option>
-                                        <option value="Empleado" th:selected="${usuario.rol == 'Empleado'}">Empleado</option>
+                                        <option value="ADMIN" th:selected="${usuario.rol == 'ADMIN'}">Administrador</option>
+                                        <option value="EMPLEADO" th:selected="${usuario.rol == 'EMPLEADO'}">Empleado</option>
                                     </select>
                                 </div>
                             </div>

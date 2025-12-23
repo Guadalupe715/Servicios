@@ -14,7 +14,6 @@ public class Servicios {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idServicios;
     private String nombre;
-    private String icono;
     private String color;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idEmpresa")
