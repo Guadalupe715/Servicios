@@ -4,10 +4,12 @@ import com.Servicio.DTOresponse.PagosResponseDTO;
 import com.Servicio.DTOresponse.Request.PagosRequestDTO;
 import com.Servicio.Entity.Pagos;
 import com.Servicio.Repository.PagosRepocitorio;
+import com.Servicio.Security.UsuarioPrincipal;
 import com.Servicio.Service.PagosServicios;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +35,10 @@ public class PagosController {
     }
 
     @GetMapping("/ver")
-    public String pagos(Model model) {
+    public String pagos(Model model, Authentication auth) {
         List<Pagos> pagos = pagosRepocitorio.findAll();
         model.addAttribute("pagos", pagos);
+
         return "pagos";
     }
     @GetMapping("/pdf/{id}")

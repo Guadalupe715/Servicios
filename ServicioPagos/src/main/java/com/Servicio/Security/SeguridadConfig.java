@@ -24,8 +24,14 @@ public class SeguridadConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/css/**").permitAll()
-                        .requestMatchers("/usuarios/**").hasRole("ADMIN") // solo admin puede agregar/editar/eliminar
-                        .requestMatchers("/verusuarios").hasAnyRole("ADMIN", "EMPLEADO") // ambos pueden ver
+                        //ADMIN
+                        .requestMatchers("/usuarios/**").hasRole("ADMIN")
+                        //EMPLEADO ---------- // ADMIN
+                        .requestMatchers("/index").hasAnyRole("ADMIN", "EMPLEADO")
+
+                        .requestMatchers("/cuenta/registrar", "/pagos/generar")
+                        .hasAnyRole("ADMIN", "EMPLEADO")
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

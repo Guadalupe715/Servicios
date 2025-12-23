@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class UsuarioPrincipal implements UserDetails {
-
+    private Integer idUsuario;
     private String nombre;
     private String email;
     private String usuario;
@@ -17,6 +17,7 @@ public class UsuarioPrincipal implements UserDetails {
     private String rol;
 
     public UsuarioPrincipal(Usuarios usuario) {
+        this.idUsuario = usuario.getIdUsuario();
         this.nombre = usuario.getNombre();
         this.email = usuario.getEmail();
         this.usuario = usuario.getUsuario();
@@ -26,7 +27,7 @@ public class UsuarioPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Convertimos a mayúsculas y aseguramos que empiece con ROLE_
+
         String r = rol.toUpperCase();
         if (!r.startsWith("ROLE_")) {
             r = "ROLE_" + r;
@@ -34,6 +35,9 @@ public class UsuarioPrincipal implements UserDetails {
         return Collections.singletonList(new SimpleGrantedAuthority(r));
     }
 
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
 
     @Override
     public String getPassword() {
@@ -47,21 +51,37 @@ public class UsuarioPrincipal implements UserDetails {
 
     // Implementa los demás métodos de UserDetails según tus necesidades
     @Override
-    public boolean isAccountNonExpired() { return true; }
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
     @Override
-    public boolean isAccountNonLocked() { return true; }
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
     @Override
-    public boolean isCredentialsNonExpired() { return true; }
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
     @Override
-    public boolean isEnabled() { return true; }
+    public boolean isEnabled() {
+        return true;
+    }
 
-    // Getters adicionales para Thymeleaf
-    public String getNombre() { return nombre; }
-    public String getEmail() { return email; }
-    public String getRol() { return rol; }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getRol() {
+        return rol;
+    }
 
 
 }

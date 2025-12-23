@@ -1,9 +1,8 @@
+let pagoIdActual = null;
+
 // -------------------------------
 // MODAL 1: Abrir modal de servicio
 // -------------------------------
-
-let pagoIdActual = null;
-
 function abrirModalSuministro(nombreServicio, nombreEmpresa, idServicio) {
     document.getElementById('servicioIdHidden').value = idServicio;
     document.getElementById('servicioHidden').value = nombreServicio;
@@ -72,32 +71,44 @@ function volverAlCliente() {
 }
 
 // --------------------------------
-// Guardar cuenta en backend
+// Guardar cuenta y luego pago en backend
 // --------------------------------
 function guardarCuenta() {
     const idMetodoPago = document.getElementById('metodoPago').value;
     const descripcion = document.getElementById('descripcion').value.trim();
-    document.getElementById('metodoPagoIdHidden').value = idMetodoPago;
     const empresaServicio = document.getElementById('empresaTexto').innerText;
 
-    const cuentaData = new URLSearchParams();
-    cuentaData.append("codigoSuministro", document.getElementById('codigoSuministro').value);
-    cuentaData.append("nombreCliente", document.getElementById('nombre').value);
-    cuentaData.append("telefono", document.getElementById('telefono').value);
-    cuentaData.append("monto", document.getElementById('monto').value);
-    cuentaData.append("serviciosOfrecidos", document.getElementById('descripcion').value);
-    cuentaData.append("publicidad", descripcion);
-    cuentaData.append("idServicio", document.getElementById('servicioIdHidden').value);
-    cuentaData.append("idMetodoPago", idMetodoPago);
+    const cuentaData = {
+        codigoSuministro: document.getElementById('codigoSuministro').value,
+        nombreCliente: document.getElementById('nombre').value,
+        telefono: document.getElementById('telefono').value,
+        monto: document.getElementById('monto').value,
+        serviciosOfrecidos: descripcion,
+        publicidad: descripcion,
+        idServicio: document.getElementById('servicioIdHidden').value,
+        idMetodoPago: idMetodoPago
+    };
 
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+    // Guardar cuenta
     fetch("/cuenta/registrar", {
         method: "POST",
-        body: cuentaData
+        headers: {
+            "Content-Type": "application/json",
+            [csrfHeader]: csrfToken
+        },
+        body: JSON.stringify(cuentaData)
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+        return res.json();
+    })
     .then(cuentaResp => {
         console.log("Cuenta guardada:", cuentaResp);
 
+        // Guardar pago
         const pagoData = {
             idUsuarios: 1,
             idServicios: document.getElementById('servicioIdHidden').value,
@@ -107,25 +118,29 @@ function guardarCuenta() {
 
         return fetch("/pagos/generar", {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                [csrfHeader]: csrfToken
+            },
             body: JSON.stringify(pagoData)
         });
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+        return res.json();
+    })
     .then(pagoResp => {
         console.log("Pago guardado:", pagoResp);
 
-        // ---------------------------
-        // ASIGNAR EL ID DEL PAGO PARA PDF
-        // ---------------------------
-            if (!pagoResp.idPagos) {
-                    alert("Error: el pago no se generó correctamente.");
-                    return;
-                }
-                     pagoIdActual = pagoResp.idPagos;
-                        document.getElementById('pagoIdHidden').value = pagoIdActual;
+        if (!pagoResp.idPagos) {
+            alert("Error: el pago no se generó correctamente.");
+            return;
+        }
 
+        pagoIdActual = pagoResp.idPagos;
+        document.getElementById('pagoIdHidden').value = pagoIdActual;
 
+        // Mostrar comprobante
         const contenido = `
         <div class="card p-4 shadow-sm border">
             <div class="row mb-3">
@@ -160,8 +175,8 @@ function guardarCuenta() {
         $('#modalComprobante').modal('show');
     })
     .catch(err => {
-        console.error(err);
-        alert("Error al registrar el pago");
+        console.error("Error al registrar el pago:", err);
+        alert("Error al registrar el pago: " + err.message);
     });
 }
 
@@ -175,10 +190,8 @@ document.getElementById('btnDescargarPdf').addEventListener('click', () => {
         return;
     }
 
-    // Cerrar modal
     $('#modalComprobante').modal('hide');
 
-    // Forzar descarga
     const link = document.createElement('a');
     link.href = '/pagos/pdf/' + id;
     link.download = 'pago_' + id + '.pdf';
@@ -186,7 +199,6 @@ document.getElementById('btnDescargarPdf').addEventListener('click', () => {
     link.click();
     document.body.removeChild(link);
 
-    // Redirigir después de descarga
     setTimeout(() => {
         window.location.href = '/pagos/ver';
     }, 500);

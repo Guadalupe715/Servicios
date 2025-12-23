@@ -5,8 +5,6 @@ import com.Servicio.DTOresponse.Request.CuentaRequestDTO;
 import com.Servicio.Service.CuentaServicios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +16,7 @@ public class CuentaController {
     private CuentaServicios cuentaServicios;
 
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrarCuenta(@ModelAttribute CuentaRequestDTO request) {
+    public ResponseEntity<?> registrarCuenta(@RequestBody CuentaRequestDTO request) {
         CuentaResponseDTO cuenta = cuentaServicios.crear(request);
         return ResponseEntity.ok(cuenta);
     }
