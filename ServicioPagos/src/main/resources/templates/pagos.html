@@ -29,7 +29,6 @@
                         <th>Codigo Operacion</th>
                         <th>Numero Comprobante</th>
                         <th>Fecha Pago</th>
-                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>
@@ -43,10 +42,6 @@
                         <td th:text="${p.codigoOperacion}"></td>
                         <td th:text="${p.numeroComprobante}"></td>
                         <td th:text="${p.fechaPago}"></td>
-                        <td>
-                            <span th:if="${p.estado == 'PENDIENTE'}" class="badge bg-warning text-dark">Pendiente</span>
-                            <span th:if="${p.estado == 'COMPLETADO'}" class="badge bg-success">Completado</span>
-                        </td>
                         <td>
                             <a th:href="@{/pagos/pdf/{id}(id=${p.idPagos})}" class="btn btn-sm btn-success">Ver</a>
                         </td>
