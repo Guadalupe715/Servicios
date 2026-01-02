@@ -7,14 +7,13 @@ import com.Servicio.Entity.*;
 import com.Servicio.Repository.*;
 import com.Servicio.Service.Impl.SVpagos;
 import com.Servicio.Util.GeneradorUtil;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
+
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
 
 import java.time.LocalDateTime;
 
@@ -73,154 +72,105 @@ public class PagosServicios implements SVpagos {
 
     public void generarPdf(Integer id, HttpServletResponse response) throws Exception {
 
-        Pagos pago = pagosRepocitorio.findById(id).orElse(null);
-        if (pago == null) return;
+        Pagos pago = pagosRepocitorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pago no encontrado"));
 
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename=pago_" + id + ".pdf");
+        response.setHeader("Content-Disposition",
+                "attachment; filename=comprobante_pago_" + id + ".pdf");
 
-        try (PDDocument document = new PDDocument()) {
+        Document document = new Document(PageSize.A4, 50, 50, 40, 40);
+        PdfWriter.getInstance(document, response.getOutputStream());
+        document.open();
 
-            PDPage page = new PDPage();
-            document.addPage(page);
+        // 🔹 FUENTES
+        Font title = new Font(Font.FontFamily.HELVETICA, 15, Font.BOLD);
+        Font subtitle = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);
+        Font normal = new Font(Font.FontFamily.HELVETICA, 11);
 
-            PDPageContentStream content = new PDPageContentStream(document, page);
+        /* =================== ENCABEZADO =================== */
 
-            float y = 750;
-            float marginX = 50;
-            float col1 = 50;
-            float col2 = 300;
+        Paragraph titulo = new Paragraph("COMPROBANTE DE PAGO", title);
+        titulo.setAlignment(Element.ALIGN_CENTER);
+        document.add(titulo);
 
-            /* ---------------- LOGO ---------------- */
-            var logoStream = getClass().getResourceAsStream("/static/img/logo.png");
-            if (logoStream != null) {
-                var image = org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
-                        .createFromByteArray(document, logoStream.readAllBytes(), "logo");
-                content.drawImage(image, 230, y - 60, 120, 50);
-            }
+        document.add(new Paragraph(" "));
 
-            y -= 80;
+        /* =================== EMPRESA =================== */
 
-            /* ---------------- EMPRESA ---------------- */
-            float pageWidth = page.getMediaBox().getWidth();
-            String empresa = pago.getCuentaSuministro().getNombreEmpresa();
-            String direccion = pago.getCuentaSuministro().getDireccion();
-            String ruc = pago.getCuentaSuministro().getRuc();
+        Paragraph empresa = new Paragraph(pago.getCuentaSuministro().getNombreEmpresa(), subtitle);
+        empresa.setAlignment(Element.ALIGN_CENTER);
+        document.add(empresa);
 
-            /* -------- NOMBRE EMPRESA (CENTRADO) -------- */
-            content.beginText();
-            content.setFont(PDType1Font.HELVETICA_BOLD, 14);
-            content.setLeading(18f);
+        Paragraph empresaInfo = new Paragraph(
+                "RUC: " + pago.getCuentaSuministro().getRuc() + "\n" +
+                        pago.getCuentaSuministro().getDireccion(),
+                normal
+        );
+        empresaInfo.setAlignment(Element.ALIGN_CENTER);
+        document.add(empresaInfo);
 
-            float empresaWidth = PDType1Font.HELVETICA_BOLD.getStringWidth(empresa) / 1000 * 14;
-            float empresaX = (pageWidth - empresaWidth) / 2;
-            content.newLineAtOffset(empresaX, y);
-            content.showText(empresa);
-            content.endText();
-            y -= 30;
+        document.add(new Paragraph(" "));
+        addLine(document);
 
-            content.beginText();
-            content.setFont(PDType1Font.HELVETICA, 13);
+        /* =================== CLIENTE =================== */
 
-            float centro = pageWidth / 2;
-            content.newLineAtOffset(centro - 140, y);
-            content.showText(direccion);
-
-            content.newLineAtOffset(180, 0);
-            content.showText("RUC: " + ruc);
-            content.endText();
-
-            y -= 22;
-            drawLine(content, y);
-            y -= 18;
-
-            /* -------- COLUMNA IZQUIERDA -------- */
-            content.beginText();
-            content.setFont(PDType1Font.HELVETICA, 11);
-            content.setLeading(16f);
-            content.newLineAtOffset(col1, y);
-            content.showText("Entidad: " + pago.getServicios().getEmpresa().getNombre());
-            content.newLine();
-            content.showText("Código Suministro: " + pago.getCuentaSuministro().getCodigoSuministro());
-            content.newLine();
-            content.showText("Monto: S/. " + pago.getCuentaSuministro().getMonto());
-
-            content.endText();
-
-            /* -------- COLUMNA DERECHA -------- */
-            content.beginText();
-            content.setFont(PDType1Font.HELVETICA, 11);
-            content.setLeading(16f);
-            content.newLineAtOffset(col2, y);
-            content.showText("Servicio: " + pago.getServicios().getNombre());
-            content.newLine();
-            content.showText("Método Pago: " + pago.getMetodoPago().getNombre());
-            content.newLine();
-            content.showText("Fecha: " + pago.getFechaPago());
-
-            content.endText();
+        document.add(new Paragraph("DATOS DEL CLIENTE", subtitle));
+        document.add(new Paragraph("Nombre: " +
+                pago.getCuentaSuministro().getNombreCliente(), normal));
+        document.add(new Paragraph("Código Suministro: " +
+                pago.getCuentaSuministro().getCodigoSuministro(), normal));
+        document.add(new Paragraph("Telefono: " +
+                pago.getCuentaSuministro().getTelefono(), normal));
 
 
-            y -= 70;
-            drawLine(content, y);
-            y -= 20;
+        document.add(new Paragraph(" "));
+        addLine(document);
 
-            /* ---------------- COMPROBANTE ---------------- */
-            content.beginText();
-            content.setFont(PDType1Font.HELVETICA, 11);
-            content.setLeading(16f);
-            content.newLineAtOffset(marginX, y);
-            content.showText("Código Operación: " + pago.getCodigoOperacion());
-            content.newLine();
-            content.showText("Número Comprobante: " + pago.getNumeroComprobante());
-            content.endText();
+        /* =================== DETALLE DEL PAGO =================== */
 
-            y -= 40;
+        document.add(new Paragraph("DETALLE DEL PAGO", subtitle));
 
-            /* ---------------- TEXTO LARGO (AUTO SALTO) ---------------- */
-            y = writeParagraph(document, content, page,
-                    "Publicidad: " + pago.getCuentaSuministro().getPublicidad(), y);
+        document.add(new Paragraph("Servicio: " +
+                pago.getServicios().getNombre(), normal));
 
-            y = writeParagraph(document, content, page,
-                    "Servicios Ofrecidos: " + pago.getCuentaSuministro().getServiciosOfrecidos(), y);
+        document.add(new Paragraph("Método de Pago: " +
+                pago.getMetodoPago().getNombre(), normal));
 
-            content.close();
-            document.save(response.getOutputStream());
-        }
+        document.add(new Paragraph("Monto Pagado: S/ " +
+                pago.getCuentaSuministro().getMonto(), normal));
 
+        document.add(new Paragraph("Fecha de Pago: " +
+                pago.getFechaPago(), normal));
+
+        document.add(new Paragraph("Código de Operación: " +
+                pago.getCodigoOperacion(), normal));
+
+        document.add(new Paragraph("N° Comprobante: " +
+                pago.getNumeroComprobante(), normal));
+
+        document.add(new Paragraph(""+ pago.getCuentaSuministro().getServiciosOfrecidos(),normal));
+
+        document.add(new Paragraph(" "));
+        addLine(document);
+
+        /* =================== PIE =================== */
+
+        Paragraph pie = new Paragraph(
+                "Este comprobante acredita el pago realizado.\nGracias por confiar en nosotros.",
+                normal
+        );
+        pie.setAlignment(Element.ALIGN_CENTER);
+        document.add(pie);
+
+        document.close();
     }
 
-    private void drawLine(PDPageContentStream content, float y) throws Exception {
-        content.moveTo(50, y);
-        content.lineTo(550, y);
-        content.stroke();
+    private void addLine(Document document) throws DocumentException {
+        LineSeparator line = new LineSeparator();
+        line.setLineWidth(0.8f);
+        document.add(new Chunk(line));
     }
-
-    private float writeParagraph(PDDocument doc, PDPageContentStream content,
-                                 PDPage page, String text, float y) throws Exception {
-
-        if (y < 100) {
-            content.close();
-            page = new PDPage();
-            doc.addPage(page);
-            content = new PDPageContentStream(doc, page);
-            y = 750;
-        }
-
-        content.beginText();
-        content.setFont(PDType1Font.HELVETICA, 11);
-        content.newLineAtOffset(50, y);
-
-        for (String line : text.split("(?<=\\G.{80})")) {
-            content.showText(line);
-            content.newLine();
-            y -= 15;
-        }
-
-        content.endText();
-        return y - 10;
-    }
-
 
 
 }

@@ -65,12 +65,15 @@
                     </h5>
 
                     <div class="d-flex gap-2">
-                        <button class="btn btn-outline-success btn-sm">
-                            <i class="fas fa-file-excel"></i> Excel
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm">
+                        <a th:if="${reporteTemporal != null}"
+                           th:href="@{/report/pdf(
+                            fechaInicio=${reporteTemporal.fechaInicio},
+                            fechaFin=${reporteTemporal.fechaFin}
+                       )}"
+                           class="btn btn-outline-danger btn-sm">
                             <i class="fas fa-file-pdf"></i> PDF
-                        </button>
+                        </a>
+
                     </div>
 
                 </div>
