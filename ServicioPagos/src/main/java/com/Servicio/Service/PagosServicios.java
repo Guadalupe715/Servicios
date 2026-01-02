@@ -43,31 +43,37 @@ public class PagosServicios implements SVpagos {
         pagos.setMetodoPago(metodoPago);
         pagos.setCuentaSuministro(cuentaSuministro);
         pagos.setCodigoOperacion(GeneradorUtil.generarCodigoOperacion());
-        pagos.setNumeroComprobante(GeneradorUtil.generaNumeroComprobante());
         pagos.setFechaPago(LocalDateTime.now());
 
         Pagos guardar = pagosRepocitorio.save(pagos);
 
-        PagosResponseDTO comprobante = new PagosResponseDTO(
-                guardar.getIdPagos(),
+        pagos.setNumeroComprobante(
+                GeneradorUtil.generarNumeroComprobante(pagos.getIdPagos())
+        );
+
+        pagos = pagosRepocitorio.save(pagos);
+
+        return new PagosResponseDTO(
+                pagos.getIdPagos(),
                 cuentaSuministro.getNombreEmpresa(),
                 cuentaSuministro.getDireccion(),
                 cuentaSuministro.getRuc(),
                 usuarios.getNombre(),
-                        new ClienteResponseDTO(
-                                cuentaSuministro.getNombreCliente(),
-                                cuentaSuministro.getTelefono(),
-                                cuentaSuministro.getCodigoSuministro()),
-                        guardar.getCodigoOperacion(),
-                        guardar.getNumeroComprobante(),
-                        guardar.getFechaPago(),
-                        servicios.getNombre(),
-                        cuentaSuministro.getMonto(),
-                        metodoPago.getNombre(),
-                        cuentaSuministro.getServiciosOfrecidos(),
-                        cuentaSuministro.getPublicidad());
+                new ClienteResponseDTO(
+                        cuentaSuministro.getNombreCliente(),
+                        cuentaSuministro.getTelefono(),
+                        cuentaSuministro.getCodigoSuministro()
+                ),
+                pagos.getCodigoOperacion(),
+                pagos.getNumeroComprobante(),
+                pagos.getFechaPago(),
+                servicios.getNombre(),
+                cuentaSuministro.getMonto(),
+                metodoPago.getNombre(),
+                cuentaSuministro.getServiciosOfrecidos(),
+                cuentaSuministro.getPublicidad()
+        );
 
-        return comprobante;
     }
 
     public void generarPdf(Integer id, HttpServletResponse response) throws Exception {
@@ -149,7 +155,7 @@ public class PagosServicios implements SVpagos {
         document.add(new Paragraph("N° Comprobante: " +
                 pago.getNumeroComprobante(), normal));
 
-        document.add(new Paragraph(""+ pago.getCuentaSuministro().getServiciosOfrecidos(),normal));
+        document.add(new Paragraph("" + pago.getCuentaSuministro().getServiciosOfrecidos(), normal));
 
         document.add(new Paragraph(" "));
         addLine(document);

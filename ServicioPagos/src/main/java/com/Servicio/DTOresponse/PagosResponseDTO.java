@@ -17,7 +17,9 @@ public class PagosResponseDTO {
     private String usuario;
 
     private ClienteResponseDTO cliente;
+
     private String codigoOperacion;
+
     private String numeroComprobante;
     private LocalDateTime fechaPago;
     private String servicio;
