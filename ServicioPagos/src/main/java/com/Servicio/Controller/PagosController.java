@@ -4,7 +4,6 @@ import com.Servicio.DTOresponse.PagosResponseDTO;
 import com.Servicio.DTOresponse.Request.PagosRequestDTO;
 import com.Servicio.Entity.Pagos;
 import com.Servicio.Repository.PagosRepocitorio;
-import com.Servicio.Security.UsuarioPrincipal;
 import com.Servicio.Service.PagosServicios;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

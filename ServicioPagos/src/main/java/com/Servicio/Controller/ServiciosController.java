@@ -1,7 +1,6 @@
 package com.Servicio.Controller;
 
 import com.Servicio.DTOresponse.CuentaResponseDTO;
-import com.Servicio.Entity.Empresa;
 import com.Servicio.Entity.MetodoPago;
 import com.Servicio.Entity.Servicios;
 import com.Servicio.Service.CuentaServicios;
@@ -14,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/servicios")
