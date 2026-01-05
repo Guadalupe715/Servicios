@@ -157,6 +157,8 @@ public class PagosServicios implements SVpagos {
 
         document.add(new Paragraph("" + pago.getCuentaSuministro().getServiciosOfrecidos(), normal));
 
+        document.add(new Paragraph(""+pago.getCuentaSuministro().getPublicidad(),normal));
+
         document.add(new Paragraph(" "));
         addLine(document);
 

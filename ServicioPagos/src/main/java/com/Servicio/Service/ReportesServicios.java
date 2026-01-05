@@ -14,11 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.time.LocalDate;
 
 @Service
 public class ReportesServicios implements SVreportes {
@@ -133,5 +138,71 @@ public class ReportesServicios implements SVreportes {
                 totalPorMetodo
         );
 
+    }
+
+    public void generarReportePDF(LocalDate fechaInicio, LocalDate fechaFin, HttpServletResponse response)
+            throws IOException, DocumentException {
+
+        // 🔹 Reutilizas tu lógica existente
+        ReportesRequestDTO request = new ReportesRequestDTO();
+        request.setFechaInicio(fechaInicio);
+        request.setFechaFin(fechaFin);
+
+        ReportesResponseDTO reporte = generarReporte(request);
+
+        // 🔹 Configurar respuesta
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition",
+                "attachment; filename=reporte_pagos.pdf");
+
+        Document document = new Document(PageSize.A4);
+        PdfWriter.getInstance(document, response.getOutputStream());
+        document.open();
+
+        // 🔹 Título
+        Font titulo = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
+        Paragraph p = new Paragraph("REPORTE DE PAGOS", titulo);
+        p.setAlignment(Element.ALIGN_CENTER);
+        document.add(p);
+
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph("Desde: " + fechaInicio));
+        document.add(new Paragraph("Hasta: " + fechaFin));
+        document.add(new Paragraph(" "));
+
+        // 🔹 Tabla
+        PdfPTable table = new PdfPTable(7);
+        table.setWidthPercentage(100);
+
+        String[] headers = {
+                "#", "Suministro", "Cliente", "Servicio",
+                "Monto", "Método", "Fecha Pago"
+        };
+
+        for (String h : headers) {
+            PdfPCell cell = new PdfPCell(new Phrase(h));
+            cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            table.addCell(cell);
+        }
+
+        int i = 1;
+        for (var d : reporte.getDetalles()) {
+            table.addCell(String.valueOf(i++));
+            table.addCell(d.getCodigoSuministro());
+            table.addCell(d.getNombreCliente());
+            table.addCell(d.getServicio());
+            table.addCell("S/ " + d.getMonto());
+            table.addCell(d.getMetodoPago());
+            table.addCell(d.getFechaPago().toString());
+        }
+
+        document.add(table);
+
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph(
+                "Total generado: S/ " + reporte.getTotalGeneral()
+        ));
+
+        document.close();
     }
 }

@@ -15,7 +15,7 @@ public class CuentaSuministro {
     private Integer idCuentaSuministro;
     private String nombreEmpresa = "NEUROELEVATE E.I.R.L";
     private String direccion ="Jirón independencia 1009";
-    private String ruc="25678099876312";
+    private String ruc="20614329514";
     private String codigoSuministro;
     private String nombreCliente;
     private double monto;

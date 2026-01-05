@@ -15,7 +15,6 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -74,70 +73,10 @@ public class ReporteController {
 
     @GetMapping("/pdf")
     public void descargarPDF(
-            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio, @RequestParam("fechaFin")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
             HttpServletResponse response
-    ) throws IOException, DocumentException {
-
-        // 🔹 Generar el mismo reporte que ya usas en pantalla
-        ReportesRequestDTO request = new ReportesRequestDTO();
-        request.setFechaInicio(fechaInicio);
-        request.setFechaFin(fechaFin);
-
-        ReportesResponseDTO reporte = reportesServicios.generarReporte(request);
-
-        // 🔹 Configurar descarga
-        response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition",
-                "attachment; filename=reporte_pagos.pdf");
-
-        Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, response.getOutputStream());
-        document.open();
-
-        // 🔹 Título
-        Font titulo = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
-        Paragraph p = new Paragraph("REPORTE DE PAGOS", titulo);
-        p.setAlignment(Element.ALIGN_CENTER);
-        document.add(p);
-
-        document.add(new Paragraph(" "));
-        document.add(new Paragraph("Desde: " + fechaInicio));
-        document.add(new Paragraph("Hasta: " + fechaFin));
-        document.add(new Paragraph(" "));
-
-        // 🔹 Tabla
-        PdfPTable table = new PdfPTable(7);
-        table.setWidthPercentage(100);
-
-        String[] headers = {
-                "#", "Suministro", "Cliente", "Servicio",
-                "Monto", "Método", "Fecha Pago"
-        };
-
-        for (String h : headers) {
-            PdfPCell cell = new PdfPCell(new Phrase(h));
-            cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-            table.addCell(cell);
-        }
-
-        int i = 1;
-        for (var d : reporte.getDetalles()) {
-            table.addCell(String.valueOf(i++));
-            table.addCell(d.getCodigoSuministro());
-            table.addCell(d.getNombreCliente());
-            table.addCell(d.getServicio());
-            table.addCell("S/ " + d.getMonto());
-            table.addCell(d.getMetodoPago());
-            table.addCell(d.getFechaPago().toString());
-        }
-
-        document.add(table);
-
-        document.add(new Paragraph(" "));
-        document.add(new Paragraph("Total generado: S/ " + reporte.getTotalGeneral()));
-
-        document.close();
+    ) throws Exception {
+        reportesServicios.generarReportePDF(fechaInicio, fechaFin, response);
     }
-
 }
